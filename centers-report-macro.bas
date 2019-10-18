@@ -1,4 +1,3 @@
-Attribute VB_Name = "Module1"
 Sub FISD()
 
 Application.ScreenUpdating = False
@@ -27,55 +26,55 @@ Dim dbOvHrs As Integer, tdOvHrs As Integer
 Dim dbHons As Integer, tdHons As Integer
 Dim dbCriminal As Integer, tdCriminal As Integer
 
-db810 = 6
+db810 = 5
 dbLast = 2
 dbFirst = 3
 dbMiddle = 4
-dbNickname = 5
-dbProgram = 13
-tdStatus = 14
-dbAppDate = 15
+dbNickname = 28
+dbProgram = 15
+dbStatus = 13
+dbAppDate = 14
 dbLocAddress = 45
 dbLocPhone = 44
-dbEmail = 46
-dbAge = 7
-dbGA = 32
+dbEmail = 26
+dbAge = 6
+dbGA = 19
 dbDegree = 34
-dbMajor1 = 35
-dbMajor2 = 36
-dbMajor3 = 37
-dbMinor1 = 38
-dbMinor2 = 39
-dbInstGPA = 8
-dbOvGPA = 9
-dbInstHrs = 11
-dbOvHrs = 12
-dbHons = 33
+dbMajor1 = 21
+dbMajor2 = 22
+dbMajor3 = 23
+dbMinor1 = 24
+dbMinor2 = 25
+dbInstGPA = 7
+dbOvGPA = 8
+dbInstHrs = 10
+dbOvHrs = 11
+dbHons = 20
 
 
 tdLast = 1
 tdFirst = 2
 tdMiddle = 3
-tdProgram = 4
-tdStatus = 5
-tdAppDate = 6
-tdEmail = 9
+tdProgram = 20
+tdStatus = 4
+tdAppDate = 5
+tdEmail = 6
 tdLocAddress = 26
 tdLocPhone = 35
-tdAge = 10
-tdGA = 11
-tdDegree = 12
-tdMajor1 = 13
-tdMajor2 = 14
-tdMajor3 = 15
-tdMinor1 = 16
-tdMinor2 = 17
-tdHons = 18
-tdInstGPA = 19
-tdOvGPA = 20
-tdInstHrs = 21
-tdOvHrs = 22
-td810 = 23
+tdAge = 7
+tdGA = 8
+tdDegree = 21
+tdMajor1 = 9
+tdMajor2 = 10
+tdMajor3 = 11
+tdMinor1 = 12
+tdMinor2 = 13
+tdHons = 14
+tdInstGPA = 15
+tdOvGPA = 16
+tdInstHrs = 17
+tdOvHrs = 18
+td810 = 19
 tdNickname = 24
 
 
@@ -157,7 +156,7 @@ Dim m As Integer
 Dim nameChk As String
 Dim firstSpace As Integer
 i = 2
-m = 12
+m = 8
 
 Do While tdOutput.Cells(i, tdLast).Value <> ""
   For j = 11 To database.UsedRange.Rows.Count
@@ -179,20 +178,22 @@ Do While tdOutput.Cells(i, tdLast).Value <> ""
         End If
       End If
    
-      database.Cells(j, dbAppDate).Value = tdOutput.Cells(i, tdAppDate).Value
-      database.Cells(j, dbLocAddress).Value = tdOutput.Cells(i, tdLocAddress).Value
-      database.Cells(j, dbLocPhone).Value = tdOutput.Cells(i, tdLocPhone).Value
-      database.Cells(j, dbEmail).Value = tdOutput.Cells(i, tdEmail).Value
-      database.Cells(j, dbGA).Value = tdOutput.Cells(i, tdGA).Value
-      database.Cells(j, dbMajor1).Value = tdOutput.Cells(i, tdMajor1).Value
-      database.Cells(j, dbMajor2).Value = tdOutput.Cells(i, tdMajor2).Value
-      database.Cells(j, dbMinor1).Value = tdOutput.Cells(i, tdMinor1).Value
-      database.Cells(j, dbMinor2).Value = tdOutput.Cells(i, tdMinor2).Value
-      database.Cells(j, dbInstGPA).Value = tdOutput.Cells(i, tdInstGPA).Value
-      database.Cells(j, dbOvGPA).Value = tdOutput.Cells(i, tdOvGPA).Value
-      database.Cells(j, dbInstHrs).Value = tdOutput.Cells(i, tdInstHrs).Value
-      database.Cells(j, dbOvHrs).Value = tdOutput.Cells(i, tdOvHrs).Value
-      database.Cells(j, dbHons).Value = tdOutput.Cells(i, tdHons).Value
+      database.Cells(m, dbAppDate).Value = tdOutput.Cells(i, tdAppDate).Value
+      database.Cells(m, dbStatus).Value = tdOutput.Cells(i, tdStatus).Value
+      database.Cells(m, dbAge).Value = tdOutput.Cells(i, tdAge).Value
+      database.Cells(m, dbLocAddress).Value = tdOutput.Cells(i, tdLocAddress).Value
+      database.Cells(m, dbLocPhone).Value = tdOutput.Cells(i, tdLocPhone).Value
+      database.Cells(m, dbEmail).Value = tdOutput.Cells(i, tdEmail).Value
+      database.Cells(m, dbGA).Value = tdOutput.Cells(i, tdGA).Value
+      database.Cells(m, dbMajor1).Value = tdOutput.Cells(i, tdMajor1).Value
+      database.Cells(m, dbMajor2).Value = tdOutput.Cells(i, tdMajor2).Value
+      database.Cells(m, dbMinor1).Value = tdOutput.Cells(i, tdMinor1).Value
+      database.Cells(m, dbMinor2).Value = tdOutput.Cells(i, tdMinor2).Value
+      database.Cells(m, dbInstGPA).Value = tdOutput.Cells(i, tdInstGPA).Value
+      database.Cells(m, dbOvGPA).Value = tdOutput.Cells(i, tdOvGPA).Value
+      database.Cells(m, dbInstHrs).Value = tdOutput.Cells(i, tdInstHrs).Value
+      database.Cells(m, dbOvHrs).Value = tdOutput.Cells(i, tdOvHrs).Value
+      database.Cells(m, dbHons).Value = tdOutput.Cells(i, tdHons).Value
       Exit For
     ElseIf j = database.UsedRange.Rows.Count And InStr(tdOutput.Cells(i, tdStatus).Value, "Duplicate") = 0 Then
       database.Rows(m).Insert Shift:=xlDown, _
@@ -218,6 +219,8 @@ Do While tdOutput.Cells(i, tdLast).Value <> ""
  
   
       database.Cells(m, dbAppDate).Value = tdOutput.Cells(i, tdAppDate).Value
+      database.Cells(m, dbStatus).Value = tdOutput.Cells(i, tdStatus).Value
+      database.Cells(m, dbAge).Value = tdOutput.Cells(i, tdAge).Value
       database.Cells(m, dbLocAddress).Value = tdOutput.Cells(i, tdLocAddress).Value
       database.Cells(m, dbLocPhone).Value = tdOutput.Cells(i, tdLocPhone).Value
       database.Cells(m, dbEmail).Value = tdOutput.Cells(i, tdEmail).Value
