@@ -11,55 +11,79 @@ Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
 'setup columns for reference
-Dim centers8x, exportedData8x As String
-Dim centersLast, exportedDataLast As String
-Dim centersFirst, exportedDataFirst As String
-Dim centersProgram, exportedDataProgram As Integer
-Dim centersAppDate, exportedDataAppDate As Integer
-Dim centersStatus, exportedDataStatus As Integer
-Dim centersLocAddress, exportedDataLocAddress As Integer
-Dim centersLocPhone, exportedDataLocPhone As Integer
-Dim centersEmail, exportedDataEmail As Integer
-Dim centersAge, exportedDataAge As Integer
-Dim centersGA, exportedDataGA As Integer
-Dim centersDegree, exportedDataDegree As Integer
-Dim centersMajor1, exportedDataMajor1 As Integer
-Dim centersMajor2, exportedDataMajor2 As Integer
-Dim centersMajor3, exportedDataMajor3 As Integer
-Dim centersMinor1, exportedDataMinor1 As Integer
-Dim centersMinor2, exportedDataMinor2 As Integer
-Dim centersInstGPA, exportedDataInstGPA As Integer
-Dim centersOvGPA, exportedDataOvGPA As Integer
-Dim centersInstHrs, exportedDataInstHrs As Integer
-Dim centersOvHrs, exportedDataOvHrs As Integer
-Dim centersHonors, exportedDataHonors As Integer
-Dim centersCriminal, exportedDataCriminal As Integer
+Dim exportedDataFirst As String
+Dim exportedDataLast As String
+Dim exportedData8x As String
+Dim exportedDataAge As String
+Dim exportedDataInstGPA As String
+Dim exportedDataOvGPA As String
+Dim exportedDataInstHrs As String
+Dim exportedDataOvHrs As String
+Dim exportedDataStatus As String
+Dim exportedDataAppDate As String
+Dim exportedDataProgram As String
+Dim exportedDataGA As String
+Dim exportedDataHonors As String
+Dim exportedDataMajor1 As String
+Dim exportedDataMajor2 As String
+Dim exportedDataMajor3 As String
+Dim exportedDataMinor1 As String
+Dim exportedDataMinor2 As String
+Dim exportedDataEmail As String
+Dim exportedDataDegree As String
+Dim exportedDataLocPhone As String
+Dim exportedDataLocAddress As String
+Dim exportedDataCriminal As String
+                  
+Dim centersFirst As Integer
+Dim centersLast As Integer
+Dim centers8x As Integer
+Dim centersAge As Integer
+Dim centersInstGPA As Integer
+Dim centersOvGPA As Integer
+Dim centersInstHrs As Integer
+Dim centersOvHrs As Integer
+Dim centersStatus As Integer
+Dim centersAppDate As Integer
+Dim centersProgram As Integer
+Dim centersGA As Integer
+Dim centersHonors As Integer
+Dim centersMajor1 As Integer
+Dim centersMajor2 As Integer
+Dim centersMajor3 As Integer
+Dim centersMinor1 As Integer
+Dim centersMinor2 As Integer
+Dim centersEmail As Integer
+Dim centersDegree As Integer
+Dim centersLocPhone As Integer
+Dim centersLocAddress As Integer
+Dim centersCriminal As Integer
 
 'assign column number to each corresponding title
 exportedDataFirst = "B"
 exportedDataLast = "C"
 exportedDataMiddle = "D"
 exportedData8x = "CX"
-exportedDataAge = 6
-exportedDataInstGPA = 7
-exportedDataOvGPA = 8
-exportedDataInstHrs = 10
-exportedDataOvHrs = 11
-exportedDataStatus = 13
-exportedDataAppDate = 14
-exportedDataProgram = 15
-exportedDataGA = 19
-exportedDataHonors = 20
-exportedDataMajor1 = 21
-exportedDataMajor2 = 22
-exportedDataMajor3 = 23
-exportedDataMinor1 = 24
-exportedDataMinor2 = 25
-exportedDataEmail = 26
-exportedDataNickname = 28
-exportedDataDegree = 34
-exportedDataLocPhone = 44
-exportedDataLocAddress = 45
+exportedDataAge = "F"
+exportedDataInstGPA = "G"
+exportedDataOvGPA = "H"
+exportedDataInstHrs = "J"
+exportedDataOvHrs = "K"
+exportedDataStatus = "M"
+exportedDataAppDate = "N"
+exportedDataProgram = "O"
+exportedDataGA = "S"
+exportedDataHonors = "T"
+exportedDataMajor1 = "U"
+exportedDataMajor2 = "V"
+exportedDataMajor3 = "W"
+exportedDataMinor1 = "X"
+exportedDataMinor2 = "Y"
+exportedDataEmail = "Z"
+exportedDataNickname = "AB"
+exportedDataDegree = "AH"
+exportedDataLocPhone = "AR"
+exportedDataLocAddress = "AS"
 
 centersLast = 1
 centersFirst = 2
@@ -148,7 +172,7 @@ Do While exportedData.Cells(phoneRow_1, exportedDataLast).Value <> ""
     phoneRow_1 = phoneRow_1 + 1
 Loop
 
-'begin data transfer
+'Begin data transfer
 Dim s As Integer
 s = 2
 Dim t As String
