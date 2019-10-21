@@ -3,96 +3,95 @@ Sub internationalCenters()
 Application.ScreenUpdating = False
 
 'setup worksheets for reference
-Dim database As Worksheet
-Dim tdOutput As Worksheet
+Dim database, output As Worksheet
 Set database = Worksheets("3-Center Applications")
-Set tdOutput = Worksheets(1)
+Set output = Worksheets(1)
 
 'setup columns for reference
-Dim db810, td810 As Integer
-Dim dbLast, tdLast As Integer
-Dim dbFirst, tdFrist As Integer
-Dim dbProgram, tdProgram As Integer
-Dim dbAppDate, tdAppDate As Integer
-Dim dbStatus, tdStatus As Integer
-Dim dbLocAddress, tdLocAddress As Integer
-Dim dbLocPhone, tdLocPhone As Integer
-Dim dbEmail, tdEmail As Integer
-Dim dbAge, tdAge As Integer
-Dim dbGA, tdGA As Integer
-Dim dbDegree, tdDegree As Integer
-Dim dbMajor1, tdMajor1 As Integer
-Dim dbMajor2, tdMajor2 As Integer
-Dim dbMajor3, tdMajor3 As Integer
-Dim dbMinor1, tdMinor1 As Integer
-Dim dbMinor2, tdMinor2 As Integer
-Dim dbInstGPA, tdInstGPA As Integer
-Dim dbOvGPA, tdOvGPA As Integer
-Dim dbInstHrs, tdInstHrs As Integer
-Dim dbOvHrs, tdOvHrs As Integer
-Dim dbHons, tdHons As Integer
-Dim dbCriminal, tdCriminal As Integer
+Dim report8x, universityid As Integer
+Dim reportLast, Last As Integer
+Dim reportFirst, First As Integer
+Dim reportProgram, Program As Integer
+Dim reportAppDate, AppDate As Integer
+Dim reportStatus, Status As Integer
+Dim reportLocAddress, LocAddress As Integer
+Dim reportLocPhone, LocPhone As Integer
+Dim reportEmail, Email As Integer
+Dim reportAge, Age As Integer
+Dim reportGA, GA As Integer
+Dim reporegree, Degree As Integer
+Dim reportMajor1, Major1 As Integer
+Dim reportMajor2, Major2 As Integer
+Dim reportMajor3, Major3 As Integer
+Dim reportMinor1, Minor1 As Integer
+Dim reportMinor2, Minor2 As Integer
+Dim reportInstGPA, InstGPA As Integer
+Dim reportOvGPA, OvGPA As Integer
+Dim reportInstHrs, InstHrs As Integer
+Dim reportOvHrs, OvHrs As Integer
+Dim reportHons, Hons As Integer
+Dim reportCriminal, Criminal As Integer
 
-db810 = 5
-dbLast = 2
-dbFirst = 3
-dbMiddle = 4
-dbNickname = 28
-dbProgram = 15
-dbStatus = 13
-dbAppDate = 14
-dbLocAddress = 45
-dbLocPhone = 44
-dbEmail = 26
-dbAge = 6
-dbGA = 19
-dbDegree = 34
-dbMajor1 = 21
-dbMajor2 = 22
-dbMajor3 = 23
-dbMinor1 = 24
-dbMinor2 = 25
-dbInstGPA = 7
-dbOvGPA = 8
-dbInstHrs = 10
-dbOvHrs = 11
-dbHons = 20
+'assign column number to each corresponding title
+report8x = 5
+reportLast = 2
+reportFirst = 3
+reportMiddle = 4
+reportNickname = 28
+reportProgram = 15
+reportStatus = 13
+reportAppDate = 14
+reportLocAddress = 45
+reportLocPhone = 44
+reportEmail = 26
+reportAge = 6
+reportGA = 19
+reporegree = 34
+reportMajor1 = 21
+reportMajor2 = 22
+reportMajor3 = 23
+reportMinor1 = 24
+reportMinor2 = 25
+reportInstGPA = 7
+reportOvGPA = 8
+reportInstHrs = 10
+reportOvHrs = 11
+reportHons = 20
 
 
-tdLast = 1
-tdFirst = 2
-tdMiddle = 3
-tdProgram = 20
-tdStatus = 4
-tdAppDate = 5
-tdEmail = 6
-tdLocAddress = 26
-tdLocPhone = 35
-tdAge = 7
-tdGA = 8
-tdDegree = 21
-tdMajor1 = 9
-tdMajor2 = 10
-tdMajor3 = 11
-tdMinor1 = 12
-tdMinor2 = 13
-tdHons = 14
-tdInstGPA = 15
-tdOvGPA = 16
-tdInstHrs = 17
-tdOvHrs = 18
-td810 = 19
-tdNickname = 24
+Last = 1
+First = 2
+Middle = 3
+Program = 20
+Status = 4
+AppDate = 5
+Email = 6
+LocAddress = 26
+LocPhone = 35
+Age = 7
+GA = 8
+Degree = 21
+Major1 = 9
+Major2 = 10
+Major3 = 11
+Minor1 = 12
+Minor2 = 13
+Hons = 14
+InstGPA = 15
+OvGPA = 16
+InstHrs = 17
+OvHrs = 18
+universityid = 19
+Nickname = 24
 
 Dim k As Integer
 Dim l As String
 Dim n As String
 Dim p As Integer
 k = 2
-k = 2
-Do While tdOutput.Cells(k, tdLast).Value <> ""
-  If tdOutput.Cells(k, tdAppDate).Value <> 0 Then
-    tdOutput.Cells(k, tdAppDate).Value = Left(tdOutput.Cells(k, tdAppDate).Value, Len(tdOutput.Cells(k, tdAppDate).Value) - 4)
+Do While output.Cells(k, Last).Value <> ""
+  If output.Cells(k, AppDate).Value <> 0 Then
+    output.Cells(k, AppDate).Value = Left(output.Cells(k, AppDate).Value, Len(output.Cells(k, AppDate).Value) - 4)
   End If
   k = k + 1
 Loop
@@ -104,15 +103,15 @@ y = 2
 Dim x As Integer
 x = 0
 
-Do While tdOutput.Cells(z, tdLast).Value <> ""
+Do While output.Cells(z, Last).Value <> ""
   For y = 2 To 300
-    If tdOutput.Cells(y, td810).Value = tdOutput.Cells(z, td810).Value And InStr(tdOutput.Cells(y, tdStatus).Value, "Duplicate") = 0 Then
+    If output.Cells(y, 810).Value = output.Cells(z, 810).Value And InStr(output.Cells(y, Status).Value, "Duplicate") = 0 Then
       x = x + 1
     End If
     If x > 1 Then
-      MsgBox (tdOutput.Cells(z, tdLast).Value & vbNewLine & "There are duplicate records in the data. Please remove duplicate applicants in TerraDotta before importing into the Excel database. Thank you.")
-      tdOutput.UsedRange.ClearContents
-      tdOutput.Cells(1, 1).Value = "Copy and Paste TD Output onto this sheet"
+      MsgBox (output.Cells(z, Last).Value & vbNewLine & "There are duplicate records in the data. Please remove duplicate applicants in TerraDotta before importing into the Excel database. Thank you.")
+      output.UsedRange.ClearContents
+      output.Cells(1, 1).Value = "Copy and Paste  Output onto this sheet"
       Exit Sub
     End If
   Next y
@@ -120,6 +119,7 @@ Do While tdOutput.Cells(z, tdLast).Value <> ""
   z = z + 1
 Loop
 
+'phone checks
 Dim q As Integer
 q = 2
 Dim r As Integer
@@ -127,20 +127,21 @@ r = 1
 Dim phoneChk As String
 Dim newPhone As String
 
-Do While tdOutput.Cells(q, tdLast).Value <> ""
-  If tdOutput.Cells(q, tdLocPhone).Value <> "" Then
-    phoneChk = tdOutput.Cells(q, tdLocPhone).Value
+Do While output.Cells(q, Last).Value <> ""
+  If output.Cells(q, LocPhone).Value <> "" Then
+    phoneChk = output.Cells(q, LocPhone).Value
     For r = 1 To Len(phoneChk)
       If IsNumeric(Mid(phoneChk, r, 1)) Then
         newPhone = newPhone & Mid(phoneChk, r, 1)
       End If
     Next r
-    tdOutput.Cells(q, tdLocPhone).Value = newPhone
+    output.Cells(q, LocPhone).Value = newPhone
     newPhone = ""
   End If
   q = q + 1
 Loop
 
+'check for duplicate student records
 Dim s As Integer
 s = 2
 Dim t As String
@@ -153,14 +154,14 @@ Dim firstSpace As Integer
 i = 2
 m = 8
 
-Do While tdOutput.Cells(i, tdLast).Value <> ""
+Do While output.Cells(i, Last).Value <> ""
   For j = 11 To database.UsedRange.Rows.Count
-    If tdOutput.Cells(i, td810).Value = database.Cells(j, db810).Value And InStr(tdOutput.Cells(i, tdStatus).Value, "Duplicate") = 0 Then
-      database.Cells(j, dbLast).Value = tdOutput.Cells(i, tdLast).Value
-      database.Cells(j, dbFirst).Value = tdOutput.Cells(i, tdFirst).Value
-      database.Cells(j, dbMiddle).Value = tdOutput.Cells(i, tdMiddle).Value
-      If tdOutput.Cells(i, tdNickname).Value <> "" Then
-        nameChk = tdOutput.Cells(i, tdNickname).Value
+    If output.Cells(i, 810).Value = database.Cells(j, report810).Value And InStr(output.Cells(i, Status).Value, "Duplicate") = 0 Then
+      database.Cells(j, reportLast).Value = output.Cells(i, Last).Value
+      database.Cells(j, reportFirst).Value = output.Cells(i, First).Value
+      database.Cells(j, reportMiddle).Value = output.Cells(i, Middle).Value
+      If output.Cells(i, Nickname).Value <> "" Then
+        nameChk = output.Cells(i, Nickname).Value
         firstSpace = InStr(nameChk, " ")
         If firstSpace > 0 Then
           firstSpace = firstSpace - 1
@@ -168,38 +169,38 @@ Do While tdOutput.Cells(i, tdLast).Value <> ""
           firstSpace = Len(nameChk)
         End If
         nameChk = Left(nameChk, firstSpace)
-        If tdOutput.Cells(i, tdFirst).Value <> nameChk Then
-          database.Cells(j, dbNickname).Value = nameChk
+        If output.Cells(i, First).Value <> nameChk Then
+          database.Cells(j, reportNickname).Value = nameChk
         End If
       End If
    
-      database.Cells(m, dbAppDate).Value = tdOutput.Cells(i, tdAppDate).Value
-      database.Cells(m, dbStatus).Value = tdOutput.Cells(i, tdStatus).Value
-      database.Cells(m, dbAge).Value = tdOutput.Cells(i, tdAge).Value
-      database.Cells(m, dbLocAddress).Value = tdOutput.Cells(i, tdLocAddress).Value
-      database.Cells(m, dbLocPhone).Value = tdOutput.Cells(i, tdLocPhone).Value
-      database.Cells(m, dbEmail).Value = tdOutput.Cells(i, tdEmail).Value
-      database.Cells(m, dbGA).Value = tdOutput.Cells(i, tdGA).Value
-      database.Cells(m, dbMajor1).Value = tdOutput.Cells(i, tdMajor1).Value
-      database.Cells(m, dbMajor2).Value = tdOutput.Cells(i, tdMajor2).Value
-      database.Cells(m, dbMinor1).Value = tdOutput.Cells(i, tdMinor1).Value
-      database.Cells(m, dbMinor2).Value = tdOutput.Cells(i, tdMinor2).Value
-      database.Cells(m, dbInstGPA).Value = tdOutput.Cells(i, tdInstGPA).Value
-      database.Cells(m, dbOvGPA).Value = tdOutput.Cells(i, tdOvGPA).Value
-      database.Cells(m, dbInstHrs).Value = tdOutput.Cells(i, tdInstHrs).Value
-      database.Cells(m, dbOvHrs).Value = tdOutput.Cells(i, tdOvHrs).Value
-      database.Cells(m, dbHons).Value = tdOutput.Cells(i, tdHons).Value
+      database.Cells(m, reportAppDate).Value = output.Cells(i, AppDate).Value
+      database.Cells(m, reportStatus).Value = output.Cells(i, Status).Value
+      database.Cells(m, reportAge).Value = output.Cells(i, Age).Value
+      database.Cells(m, reportLocAddress).Value = output.Cells(i, LocAddress).Value
+      database.Cells(m, reportLocPhone).Value = output.Cells(i, LocPhone).Value
+      database.Cells(m, reportEmail).Value = output.Cells(i, Email).Value
+      database.Cells(m, reportGA).Value = output.Cells(i, GA).Value
+      database.Cells(m, reportMajor1).Value = output.Cells(i, Major1).Value
+      database.Cells(m, reportMajor2).Value = output.Cells(i, Major2).Value
+      database.Cells(m, reportMinor1).Value = output.Cells(i, Minor1).Value
+      database.Cells(m, reportMinor2).Value = output.Cells(i, Minor2).Value
+      database.Cells(m, reportInstGPA).Value = output.Cells(i, InstGPA).Value
+      database.Cells(m, reportOvGPA).Value = output.Cells(i, OvGPA).Value
+      database.Cells(m, reportInstHrs).Value = output.Cells(i, InstHrs).Value
+      database.Cells(m, reportOvHrs).Value = output.Cells(i, OvHrs).Value
+      database.Cells(m, reportHons).Value = output.Cells(i, Hons).Value
       Exit For
-    ElseIf j = database.UsedRange.Rows.Count And InStr(tdOutput.Cells(i, tdStatus).Value, "Duplicate") = 0 Then
+    ElseIf j = database.UsedRange.Rows.Count And InStr(output.Cells(i, Status).Value, "Duplicate") = 0 Then
       database.Rows(m).Insert Shift:=xlDown, _
       CopyOrigin:=xlFormatFromLeftOrAbove
       database.Rows(m).Interior.ColorIndex = 0
-      database.Cells(m, db810).Value = tdOutput.Cells(i, td810).Value
-      database.Cells(m, dbLast).Value = tdOutput.Cells(i, tdLast).Value
-      database.Cells(m, dbFirst).Value = tdOutput.Cells(i, tdFirst).Value
-      database.Cells(m, dbMiddle).Value = tdOutput.Cells(i, tdMiddle).Value
-      If tdOutput.Cells(i, tdNickname).Value <> "" Then
-        nameChk = tdOutput.Cells(i, tdNickname).Value
+      database.Cells(m, report810).Value = output.Cells(i, 810).Value
+      database.Cells(m, reportLast).Value = output.Cells(i, Last).Value
+      database.Cells(m, reportFirst).Value = output.Cells(i, First).Value
+      database.Cells(m, reportMiddle).Value = output.Cells(i, Middle).Value
+      If output.Cells(i, Nickname).Value <> "" Then
+        nameChk = output.Cells(i, Nickname).Value
         firstSpace = InStr(nameChk, " ")
         If firstSpace > 0 Then
           firstSpace = firstSpace - 1
@@ -207,37 +208,37 @@ Do While tdOutput.Cells(i, tdLast).Value <> ""
           firstSpace = Len(nameChk)
         End If
         nameChk = Left(nameChk, firstSpace)
-        If tdOutput.Cells(i, tdFirst).Value <> nameChk Then
-          database.Cells(m, dbNickname).Value = nameChk
+        If output.Cells(i, First).Value <> nameChk Then
+          database.Cells(m, reportNickname).Value = nameChk
         End If
       End If
- 
   
-      database.Cells(m, dbAppDate).Value = tdOutput.Cells(i, tdAppDate).Value
-      database.Cells(m, dbStatus).Value = tdOutput.Cells(i, tdStatus).Value
-      database.Cells(m, dbAge).Value = tdOutput.Cells(i, tdAge).Value
-      database.Cells(m, dbLocAddress).Value = tdOutput.Cells(i, tdLocAddress).Value
-      database.Cells(m, dbLocPhone).Value = tdOutput.Cells(i, tdLocPhone).Value
-      database.Cells(m, dbEmail).Value = tdOutput.Cells(i, tdEmail).Value
-      database.Cells(m, dbGA).Value = tdOutput.Cells(i, tdGA).Value
-      database.Cells(m, dbMajor1).Value = tdOutput.Cells(i, tdMajor1).Value
-      database.Cells(m, dbMajor2).Value = tdOutput.Cells(i, tdMajor2).Value
-      database.Cells(m, dbMinor1).Value = tdOutput.Cells(i, tdMinor1).Value
-      database.Cells(m, dbMinor2).Value = tdOutput.Cells(i, tdMinor2).Value
-      database.Cells(m, dbInstGPA).Value = tdOutput.Cells(i, tdInstGPA).Value
-      database.Cells(m, dbOvGPA).Value = tdOutput.Cells(i, tdOvGPA).Value
-      database.Cells(m, dbInstHrs).Value = tdOutput.Cells(i, tdInstHrs).Value
-      database.Cells(m, dbOvHrs).Value = tdOutput.Cells(i, tdOvHrs).Value
-      database.Cells(m, dbHons).Value = tdOutput.Cells(i, tdHons).Value
+      database.Cells(m, reportAppDate).Value = output.Cells(i, AppDate).Value
+      database.Cells(m, reportStatus).Value = output.Cells(i, Status).Value
+      database.Cells(m, reportAge).Value = output.Cells(i, Age).Value
+      database.Cells(m, reportLocAddress).Value = output.Cells(i, LocAddress).Value
+      database.Cells(m, reportLocPhone).Value = output.Cells(i, LocPhone).Value
+      database.Cells(m, reportEmail).Value = output.Cells(i, Email).Value
+      database.Cells(m, reportGA).Value = output.Cells(i, GA).Value
+      database.Cells(m, reportMajor1).Value = output.Cells(i, Major1).Value
+      database.Cells(m, reportMajor2).Value = output.Cells(i, Major2).Value
+      database.Cells(m, reportMinor1).Value = output.Cells(i, Minor1).Value
+      database.Cells(m, reportMinor2).Value = output.Cells(i, Minor2).Value
+      database.Cells(m, reportInstGPA).Value = output.Cells(i, InstGPA).Value
+      database.Cells(m, reportOvGPA).Value = output.Cells(i, OvGPA).Value
+      database.Cells(m, reportInstHrs).Value = output.Cells(i, InstHrs).Value
+      database.Cells(m, reportOvHrs).Value = output.Cells(i, OvHrs).Value
+      database.Cells(m, reportHons).Value = output.Cells(i, Hons).Value
       m = m + 1
     End If
   Next j
   i = i + 1
 Loop
 
+'finishing moves, flawless victory
 database.Cells(5, 3).Value = Now
-tdOutput.UsedRange.ClearContents
-tdOutput.Cells(1, 1).Value = "Copy and Paste report onto this sheet"
+output.UsedRange.ClearContents
+output.Cells(1, 1).Value = "Copy and Paste report onto this sheet"
 
 Application.ScreenUpdating = True
 
