@@ -4,7 +4,7 @@ Application.ScreenUpdating = False
 
 'setup worksheets for reference
 Dim centersDB, exportedData As Worksheet
-Set centersDB = Worksheets("International Centers")
+Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
 'setup columns for reference
@@ -105,13 +105,13 @@ y = 2
 Dim x As Integer
 x = 0
 
-Do While exportedData.Cells(z, centersLast).Value <> ""
+Do While exportedData.Cells(z, exportedDataLast).Value <> ""
   For y = 2 To 300
-    If exportedData.Cells(y, centers8x).Value = exportedData.Cells(z, centers8x).Value And InStr(exportedData.Cells(y, centersStatus).Value, "Duplicate") = 0 Then
+    If exportedData.Cells(y, exportedData8x).Value = exportedData.Cells(z, exportedData8x).Value And InStr(exportedData.Cells(y, exportedDataStatus).Value, "Duplicate") = 0 Then
       x = x + 1
     End If
     If x > 1 Then
-      MsgBox (exportedData.Cells(z, centersLast).Value & vbNewLine & "Serious Error - duplicate records exist")
+      MsgBox (exportedData.Cells(z, exportedDataLast).Value & vbNewLine & "Serious Error - duplicate records exist")
       exportedData.UsedRange.ClearContents
       exportedData.Cells(1, 1).Value = "Copy and Paste output onto this sheet"
       Exit Sub 'serious error, macro stops all further actions
