@@ -1,30 +1,37 @@
-Sub FISD()
+Sub internationalCenters()
 
 Application.ScreenUpdating = False
 
-Dim db810 As Integer, td810 As Integer
-Dim dbLast As Integer, tdLast As Integer
-Dim dbFirst As Integer, tdFrist As Integer
-Dim dbProgram As Integer, tdProgram As Integer
-Dim dbAppDate As Integer, tdAppDate As Integer
-Dim dbStatus As Integer, tdStatus As Integer
-Dim dbLocAddress As Integer, tdLocAddress As Integer
-Dim dbLocPhone As Integer, tdLocPhone As Integer
-Dim dbEmail As Integer, tdEmail As Integer
-Dim dbAge As Integer, tdAge As Integer
-Dim dbGA As Integer, tdGA As Integer
-Dim dbDegree As Integer, tdDegree As Integer
-Dim dbMajor1 As Integer, tdMajor1 As Integer
-Dim dbMajor2 As Integer, tdMajor2 As Integer
-Dim dbMajor3 As Integer, tdMajor3 As Integer
-Dim dbMinor1 As Integer, tdMinor1 As Integer
-Dim dbMinor2 As Integer, tdMinor2 As Integer
-Dim dbInstGPA As Integer, tdInstGPA As Integer
-Dim dbOvGPA As Integer, tdOvGPA As Integer
-Dim dbInstHrs As Integer, tdInstHrs As Integer
-Dim dbOvHrs As Integer, tdOvHrs As Integer
-Dim dbHons As Integer, tdHons As Integer
-Dim dbCriminal As Integer, tdCriminal As Integer
+'setup worksheets for reference
+Dim database As Worksheet
+Dim tdOutput As Worksheet
+Set database = Worksheets("3-Center Applications")
+Set tdOutput = Worksheets(1)
+
+'setup columns for reference
+Dim db810, td810 As Integer
+Dim dbLast, tdLast As Integer
+Dim dbFirst, tdFrist As Integer
+Dim dbProgram, tdProgram As Integer
+Dim dbAppDate, tdAppDate As Integer
+Dim dbStatus, tdStatus As Integer
+Dim dbLocAddress, tdLocAddress As Integer
+Dim dbLocPhone, tdLocPhone As Integer
+Dim dbEmail, tdEmail As Integer
+Dim dbAge, tdAge As Integer
+Dim dbGA, tdGA As Integer
+Dim dbDegree, tdDegree As Integer
+Dim dbMajor1, tdMajor1 As Integer
+Dim dbMajor2, tdMajor2 As Integer
+Dim dbMajor3, tdMajor3 As Integer
+Dim dbMinor1, tdMinor1 As Integer
+Dim dbMinor2, tdMinor2 As Integer
+Dim dbInstGPA, tdInstGPA As Integer
+Dim dbOvGPA, tdOvGPA As Integer
+Dim dbInstHrs, tdInstHrs As Integer
+Dim dbOvHrs, tdOvHrs As Integer
+Dim dbHons, tdHons As Integer
+Dim dbCriminal, tdCriminal As Integer
 
 db810 = 5
 dbLast = 2
@@ -77,21 +84,11 @@ tdOvHrs = 18
 td810 = 19
 tdNickname = 24
 
-
-
-Dim database As Worksheet
-Dim tdOutput As Worksheet
-Set database = Worksheets("3-Center Applications")
-Set tdOutput = Worksheets("Report")
-
 Dim k As Integer
 Dim l As String
 Dim n As String
 Dim p As Integer
 k = 2
-
-
-
 k = 2
 Do While tdOutput.Cells(k, tdLast).Value <> ""
   If tdOutput.Cells(k, tdAppDate).Value <> 0 Then
@@ -147,8 +144,6 @@ Loop
 Dim s As Integer
 s = 2
 Dim t As String
-
-
 
 Dim i As Integer
 Dim j As Integer
