@@ -1,6 +1,9 @@
 Sub internationalCenters()
 
 Application.ScreenUpdating = False
+'use the debug code to prevent data loss while testing, not to be used in production
+Dim debugCode As Boolean
+debugCode = True
 
 'setup worksheets for reference
 Dim centersDB, exportedData As Worksheet
@@ -90,14 +93,14 @@ Dim l As String
 Dim n As String
 Dim p As Integer
 k = 2
-Do While exportedData.Cells(k, centersLast).Value <> ""
-  If exportedData.Cells(k, centersAppDate).Value <> 0 Then
-    exportedData.Cells(k, centersAppDate).Value = Left(exportedData.Cells(k, centersAppDate).Value, Len(exportedData.Cells(k, centersAppDate).Value) - 4)
+Do While exportedData.Cells(k, exportedDataLast).Value <> ""
+  If exportedData.Cells(k, exportedDataAppDate).Value <> 0 Then
+    exportedData.Cells(k, exportedDataAppDate).Value = Left(exportedData.Cells(k, exportedDataAppDate).Value, Len(exportedData.Cells(k, exportedDataAppDate).Value) - 4)
   End If
   k = k + 1
 Loop
 
-'
+'duplicate person record check
 Dim z As Integer
 z = 2
 Dim y As Integer
@@ -112,8 +115,10 @@ Do While exportedData.Cells(z, exportedDataLast).Value <> ""
     End If
     If x > 1 Then
       MsgBox (exportedData.Cells(z, exportedDataLast).Value & vbNewLine & "Serious Error - duplicate records exist")
-      exportedData.UsedRange.ClearContents
-      exportedData.Cells(1, 1).Value = "Copy and Paste output onto this sheet"
+        If debugCode = False Then
+            exportedData.UsedRange.ClearContents
+            exportedData.Cells(1, 1).Value = "Copy and Paste output onto this sheet"
+        End If
       Exit Sub 'serious error, macro stops all further actions
     End If
   Next y
@@ -129,15 +134,15 @@ r = 1
 Dim phoneChk As String
 Dim newPhone As String
 
-Do While exportedData.Cells(q, centersLast).Value <> ""
-  If exportedData.Cells(q, centersLocPhone).Value <> "" Then
-    phoneChk = exportedData.Cells(q, centersLocPhone).Value
+Do While exportedData.Cells(q, exportedDataLast).Value <> ""
+  If exportedData.Cells(q, exportedDataLocPhone).Value <> "" Then
+    phoneChk = exportedData.Cells(q, exportedDataLocPhone).Value
     For r = 1 To Len(phoneChk)
       If IsNumeric(Mid(phoneChk, r, 1)) Then
         newPhone = newPhone & Mid(phoneChk, r, 1)
       End If
     Next r
-    exportedData.Cells(q, centersLocPhone).Value = newPhone
+    exportedData.Cells(q, exportedDataLocPhone).Value = newPhone
     newPhone = ""
   End If
   q = q + 1
@@ -156,15 +161,15 @@ Dim firstSpace As Integer
 i = 2
 m = 8
 
-Do While exportedData.Cells(i, centersLast).Value <> ""
+Do While exportedData.Cells(i, exportedDataLast).Value <> ""
   For j = 11 To centersDB.UsedRange.Rows.Count
-    If exportedData.Cells(i, centers8x).Value = centersDB.Cells(j, centers8x).Value And InStr(centers.Cells(i, exportedDataStatus).Value, "Duplicate") = 0 Then
-      centersDB.Cells(j, centersLast).Value = centers.Cells(i, exportedDataLast).Value
-      centersDB.Cells(j, centersFirst).Value = centers.Cells(i, exportedDataFirst).Value
-      centersDB.Cells(j, centersMiddle).Value = centers.Cells(i, exportedDataMiddle).Value
+    If exportedData.Cells(i, exportedData8x).Value = centersDB.Cells(j, centers8x).Value And InStr(exportedData.Cells(i, exportedDataStatus).Value, "Duplicate") = 0 Then
+      centersDB.Cells(j, centersLast).Value = exportedData.Cells(i, exportedDataLast).Value
+      centersDB.Cells(j, centersFirst).Value = exportedData.Cells(i, exportedDataFirst).Value
+      centersDB.Cells(j, centersMiddle).Value = exportedData.Cells(i, exportedDataMiddle).Value
       'does the nickname exist??
-      If centers.Cells(i, exportedDataNickname).Value <> "" Then
-        nameChk = centers.Cells(i, exportedDataNickname).Value
+      If exportedData.Cells(i, exportedDataNickname).Value <> "" Then
+        nameChk = exportedData.Cells(i, exportedDataNickname).Value
         firstSpace = InStr(nameChk, " ")
         If firstSpace > 0 Then
           firstSpace = firstSpace - 1
@@ -172,7 +177,7 @@ Do While exportedData.Cells(i, centersLast).Value <> ""
           firstSpace = Len(nameChk)
         End If
         nameChk = Left(nameChk, firstSpace)
-        If centers.Cells(i, exportedDataFirst).Value <> nameChk Then
+        If exportedData.Cells(i, exportedDataFirst).Value <> nameChk Then
           centersDB.Cells(j, centersNickname).Value = nameChk
         End If
       End If
@@ -241,8 +246,10 @@ Loop
 
 'finishing moves, flawless victory
 centersDB.Cells(5, 3).Value = Now
-exportedData.UsedRange.ClearContents
-exportedData.Cells(1, 1).Value = "Copy and Paste centers onto this sheet"
+If debugCode = False Then
+    exportedData.UsedRange.ClearContents
+    exportedData.Cells(1, 1).Value = "Copy and Paste centers onto this sheet"
+End If
 
 Application.ScreenUpdating = True
 End Sub
