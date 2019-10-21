@@ -126,24 +126,24 @@ Do While exportedData.Cells(z, exportedDataLast).Value <> ""
 Loop
 
 'phone checks
-Dim phoneRow_1, phoneCol_2 As Integer
+Dim phoneRow_1, phoneRow_2 As Integer
 Dim phoneChk As String
 Dim newPhone As String
 
 phoneCol_1 = 2
 
-Do While exportedData.Cells(phoneCol_1, exportedDataLast).Value <> ""
-  If exportedData.Cells(phoneCol_1, exportedDataLocPhone).Value <> "" Then
-    phoneChk = exportedData.Cells(phoneCol_1, exportedDataLocPhone).Value
-    For phoneCol_2 = 1 To Len(phoneChk)
-      If IsNumeric(Mid(phoneChk, phoneCol_2, 1)) Then
-        newPhone = newPhone & Mid(phoneChk, phoneCol_2, 1)
+Do While exportedData.Cells(phoneRow_1, exportedDataLast).Value <> ""
+  If exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value <> "" Then
+    phoneChk = exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value
+    For phoneRow_2 = 1 To Len(phoneChk)
+      If IsNumeric(Mid(phoneChk, phoneRow_2, 1)) Then
+        newPhone = newPhone & Mid(phoneChk, phoneRow_2, 1)
       End If
-    Next phoneCol_2
+    Next phoneRow_2
     exportedData.Cells(q, exportedDataLocPhone).Value = newPhone
     newPhone = ""
   End If
-  phoneCol_1 = phoneCol_1 + 1
+  phoneRow_1 = phoneRow_1 + 1
 Loop
 
 'begin data transfer
