@@ -103,7 +103,7 @@ centersInstGPA = 15
 centersOvGPA = 16
 centersInstHrs = 17
 centersOvHrs = 18
-centersuniversityid = 19
+centers8x = 19
 centersProgram = 20
 centersDegree = 21
 centersNickname = 24
@@ -150,28 +150,29 @@ Do While exportedData.Cells(z, exportedDataLast).Value <> ""
 Loop
 
 'phone checks
-Dim q As Integer
-q = 2
-Dim r As Integer
-r = 1
-Dim phoneChk As String
-Dim newPhone As String
+Dim phoneRow_1, phoneRow_2 As Integer
+Dim phoneChk, newPhone As String
 
-Do While exportedData.Cells(q, exportedDataLast).Value <> ""
-  If exportedData.Cells(q, exportedDataLocPhone).Value <> "" Then
-    phoneChk = exportedData.Cells(q, exportedDataLocPhone).Value
-    For r = 1 To Len(phoneChk)
-      If IsNumeric(Mid(phoneChk, r, 1)) Then
-        newPhone = newPhone & Mid(phoneChk, r, 1)
-      End If
-    Next r
-    exportedData.Cells(q, exportedDataLocPhone).Value = newPhone
-    newPhone = ""
-  End If
-  q = q + 1
+phoneRow_1 = 2
+
+Do While exportedData.Cells(phoneRow_1, exportedDataLast).Value <> ""
+    If exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value <> "" Then
+        phoneChk = exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value
+
+        For phoneRow_2 = 1 To Len(phoneChk)
+            If IsNumeric(Mid(phoneChk, phoneRow_2, 1)) Then
+                newPhone = newPhone & Mid(phoneChk, phoneRow_2, 1)
+            End If
+        Next phoneRow_2
+        
+        exportedData.Cells(q, exportedDataLocPhone).Value = newPhone
+        newPhone = ""
+    End If
+    
+    phoneRow_1 = phoneRow_1 + 1
 Loop
 
-    'Begin data transfer
+'Begin data transfer
 Dim s As Integer
 s = 2
 Dim t As String
@@ -276,3 +277,4 @@ End If
 
 Application.ScreenUpdating = True
 End Sub
+
