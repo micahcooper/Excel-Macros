@@ -130,7 +130,7 @@ Dim phoneRow_1, phoneRow_2 As Integer
 Dim phoneChk As String
 Dim newPhone As String
 
-phoneCol_1 = 2
+phoneRow_1 = 2
 
 Do While exportedData.Cells(phoneRow_1, exportedDataLast).Value <> ""
   If exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value <> "" Then
