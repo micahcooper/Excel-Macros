@@ -11,9 +11,9 @@ Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
 'setup columns for reference
-Dim centers8x, exportedData8x As Integer
-Dim centersLast, exportedDataLast As Integer
-Dim centersFirst, exportedDataFirst As Integer
+Dim centers8x, exportedData8x As String
+Dim centersLast, exportedDataLast As String
+Dim centersFirst, exportedDataFirst As String
 Dim centersProgram, exportedDataProgram As Integer
 Dim centersAppDate, exportedDataAppDate As Integer
 Dim centersStatus, exportedDataStatus As Integer
@@ -36,44 +36,39 @@ Dim centersHonors, exportedDataHonors As Integer
 Dim centersCriminal, exportedDataCriminal As Integer
 
 'assign column number to each corresponding title
-exportedData8x = 5
-exportedDataLast = 2
-exportedDataFirst = 3
-exportedDataMiddle = 4
-exportedDataNickname = 28
-exportedDataProgram = 15
+exportedDataFirst = "B"
+exportedDataLast = "C"
+exportedDataMiddle = "D"
+exportedData8x = "CX"
+exportedDataAge = 6
+exportedDataInstGPA = 7
+exportedDataOvGPA = 8
+exportedDataInstHrs = 10
+exportedDataOvHrs = 11
 exportedDataStatus = 13
 exportedDataAppDate = 14
-exportedDataLocAddress = 45
-exportedDataLocPhone = 44
-exportedDataEmail = 26
-exportedDataAge = 6
+exportedDataProgram = 15
 exportedDataGA = 19
-exportedDataDegree = 34
+exportedDataHonors = 20
 exportedDataMajor1 = 21
 exportedDataMajor2 = 22
 exportedDataMajor3 = 23
 exportedDataMinor1 = 24
 exportedDataMinor2 = 25
-exportedDataInstGPA = 7
-exportedDataOvGPA = 8
-exportedDataInstHrs = 10
-exportedDataOvHrs = 11
-exportedDataHonors = 20
-
+exportedDataEmail = 26
+exportedDataNickname = 28
+exportedDataDegree = 34
+exportedDataLocPhone = 44
+exportedDataLocAddress = 45
 
 centersLast = 1
 centersFirst = 2
 centersMiddle = 3
-centersProgram = 20
 centersStatus = 4
 centersAppDate = 5
 centersEmail = 6
-centersLocAddress = 26
-centersLocPhone = 35
 centersAge = 7
 centersGA = 8
-centersDegree = 21
 centersMajor1 = 9
 centersMajor2 = 10
 centersMajor3 = 11
@@ -85,7 +80,11 @@ centersOvGPA = 16
 centersInstHrs = 17
 centersOvHrs = 18
 centersuniversityid = 19
+centersProgram = 20
+centersDegree = 21
 centersNickname = 24
+centersLocAddress = 26
+centersLocPhone = 35
 
 'modify dates to show month,day,year only
 Dim k As Integer
