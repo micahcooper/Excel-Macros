@@ -11,32 +11,53 @@ Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
 'setup columns for reference
-Dim centersFirst, exportedDataFirst As String
-Dim centersLast, exportedDataLast As String
-      
-Dim centers8x, exportedData8x As String
-Dim centersAge, exportedDataAge As String
-Dim centersInstGPA, exportedDataInstGPA As String
-Dim centersOvGPA, exportedDataOvGPA As String
-Dim centersInstHrs, exportedDataInstHrs As String
-Dim centersOvHrs, exportedDataOvHrs As String
-Dim centersStatus, exportedDataStatus As String
-Dim centersAppDate, exportedDataAppDate As String
-Dim centersProgram, exportedDataProgram As String
-Dim centersGA, exportedDataGA As String
-Dim centersHonors, exportedDataHonors As String
-Dim centersMajor1, exportedDataMajor1 As String
-Dim centersMajor2, exportedDataMajor2 As String
-Dim centersMajor3, exportedDataMajor3 As String
-Dim centersMinor1, exportedDataMinor1 As String
-Dim centersMinor2, exportedDataMinor2 As String
-Dim centersEmail, exportedDataEmail As String
-
-Dim centersDegree, exportedDataDegree As String
-Dim centersLocPhone, exportedDataLocPhone As String
-Dim centersLocAddress, exportedDataLocAddress As String
-
-Dim centersCriminal, exportedDataCriminal As String
+Dim exportedDataFirst As String
+Dim exportedDataLast As String
+Dim exportedData8x As String
+Dim exportedDataAge As String
+Dim exportedDataInstGPA As String
+Dim exportedDataOvGPA As String
+Dim exportedDataInstHrs As String
+Dim exportedDataOvHrs As String
+Dim exportedDataStatus As String
+Dim exportedDataAppDate As String
+Dim exportedDataProgram As String
+Dim exportedDataGA As String
+Dim exportedDataHonors As String
+Dim exportedDataMajor1 As String
+Dim exportedDataMajor2 As String
+Dim exportedDataMajor3 As String
+Dim exportedDataMinor1 As String
+Dim exportedDataMinor2 As String
+Dim exportedDataEmail As String
+Dim exportedDataDegree As String
+Dim exportedDataLocPhone As String
+Dim exportedDataLocAddress As String
+Dim exportedDataCriminal As String
+                  
+Dim centersFirst As Integer
+Dim centersLast As Integer
+Dim centers8x As Integer
+Dim centersAge As Integer
+Dim centersInstGPA As Integer
+Dim centersOvGPA As Integer
+Dim centersInstHrs As Integer
+Dim centersOvHrs As Integer
+Dim centersStatus As Integer
+Dim centersAppDate As Integer
+Dim centersProgram As Integer
+Dim centersGA As Integer
+Dim centersHonors As Integer
+Dim centersMajor1 As Integer
+Dim centersMajor2 As Integer
+Dim centersMajor3 As Integer
+Dim centersMinor1 As Integer
+Dim centersMinor2 As Integer
+Dim centersEmail As Integer
+Dim centersDegree As Integer
+Dim centersLocPhone As Integer
+Dim centersLocAddress As Integer
+Dim centersCriminal As Integer
 
 'assign column number to each corresponding title
 exportedDataFirst = "B"
