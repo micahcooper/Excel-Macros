@@ -147,7 +147,7 @@ Do While exportedData.Cells(q, exportedDataLast).Value <> ""
   q = q + 1
 Loop
 
-'check for duplicate student records
+'begin data transfer
 Dim s As Integer
 s = 2
 Dim t As String
