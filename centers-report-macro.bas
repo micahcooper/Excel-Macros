@@ -11,19 +11,19 @@ Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
 'setup terra dotta export data columns for reference
-Dim exportedDataFirst, exportedDataLastname, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA, exportedDataInstHrs
+Dim exportedDataFirstname, exportedDataLastname, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA, exportedDataInstHrs
 Dim exportedDataOvHrs, exportedDataStatus, exportedDataAppDate, exportedDataProgram, exportedDataGA, exportedDataHonors
 Dim exportedDataMajor1, exportedDataMajor2, exportedDataMajor3, exportedDataMinor1, exportedDataMinor2, exportedDataEmail
 Dim exportedDataDegree, exportedDataLocalPhone, exportedDataLocAddress, exportedDataCriminal
 'setup the centers database columns
-Dim centersFirst, centersLast, centers8x, centersAge, centersInstGPA, centersOvGPA, centersInstHrs, centersOvHrs
+Dim centersFirstname, centersLastname, centers8x, centersAge, centersInstGPA, centersOvGPA, centersInstHrs, centersOvHrs
 Dim centersStatus, centersAppDate, centersProgram, centersGA, centersHonors, centersMajor1, centersMajor2, centersMajor3
 Dim centersMinor1, centersMinor2, centersEmail, centersDegree, centersLocPhone, centersLocAddress, centersCriminal
 
 'assign column number to each corresponding title
-exportedDataFirst = "B"
+exportedDataFirstname = "B"
 exportedDataLastname = "C"
-exportedDataMiddle = "D"
+exportedDataMiddlename = "D"
 exportedData8x = "CX"
 exportedDataAge = "F"
 exportedDataInstGPA = "G"
@@ -46,9 +46,9 @@ exportedDataDegree = "AH"
 exportedDataLocalPhone = "S"
 exportedDataLocAddress = "AS"
 
-centersLast = 1
-centersFirst = 2
-centersMiddle = 3
+centersLastname = 1
+centersFirstname = 2
+centersMiddleName = 3
 centersStatus = 4
 centersAppDate = 5
 centersEmail = 6
@@ -64,7 +64,7 @@ centersInstGPA = 15
 centersOvGPA = 16
 centersInstHrs = 17
 centersOvHrs = 18
-centers8x = 19
+centers8x = 1
 centersProgram = 20
 centersDegree = 21
 centersNickname = 24
@@ -125,111 +125,105 @@ Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
 
     exportedData.Cells(recordCounter, exportedDataLocalPhone).Value = digitsOnlyPhoneNumber
     digitsOnlyPhoneNumber = ""
-    
     recordCounter = recordCounter + 1
 Loop
 
 'begin data transfer
-Dim s As Integer
-Dim t As String
-Dim i As Integer
-Dim j As Integer
-Dim m As Integer
-Dim nameChk As String
-Dim firstSpace As Integer
-s = 2
-i = 2
-m = 8
+Dim exportedDataRowCounter, centersRowCounter, firstSpace, nameChk
 
-Do While exportedData.Cells(i, exportedDataLastname).Value <> ""
-  For j = 11 To centersDB.UsedRange.Rows.Count
-    If exportedData.Cells(i, exportedData8x).Value = centersDB.Cells(j, centers8x).Value And InStr(exportedData.Cells(i, exportedDataStatus).Value, "Duplicate") = 0 Then
-      centersDB.Cells(j, centersLast).Value = exportedData.Cells(i, exportedDataLastname).Value
-      centersDB.Cells(j, centersFirst).Value = exportedData.Cells(i, exportedDataFirst).Value
-      centersDB.Cells(j, centersMiddle).Value = exportedData.Cells(i, exportedDataMiddle).Value
-      'does the nickname exist??
-      If exportedData.Cells(i, exportedDataNickname).Value <> "" Then
-        nameChk = exportedData.Cells(i, exportedDataNickname).Value
-        firstSpace = InStr(nameChk, " ")
-        If firstSpace > 0 Then
-          firstSpace = firstSpace - 1
-        Else
-          firstSpace = Len(nameChk)
-        End If
-        nameChk = Left(nameChk, firstSpace)
-        If exportedData.Cells(i, exportedDataFirst).Value <> nameChk Then
-          centersDB.Cells(j, centersNickname).Value = nameChk
-        End If
-      End If
+exportedDataRowCounter = 2
+Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> ""
+    For centersRowCounter = 11 To centersDB.UsedRange.Rows.Count
+        If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(centersRowCounter, centers8x).Value And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
+            centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
+            centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
+            centersDB.Cells(centersRowCounter, centersMiddleName).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMiddlename).Value
+            'does the nickname exist??
+            If exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value <> "" Then
+                nameChk = exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value
+                firstSpace = InStr(nameChk, " ")
+                If firstSpace > 0 Then
+                    firstSpace = firstSpace - 1
+                    Else
+                    firstSpace = Len(nameChk)
+                End If
+                nameChk = Left(nameChk, firstSpace)
+                If exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value <> nameChk Then
+                    centersDB.Cells(centersRowCounter, centersNickname).Value = nameChk
+                End If
+            End If
    
-      centersDB.Cells(m, centersAppDate).Value = exportedData.Cells(i, exportedDataAppDate).Value
-      centersDB.Cells(m, centersStatus).Value = exportedData.Cells(i, exportedDataStatus).Value
-      centersDB.Cells(m, centersAge).Value = exportedData.Cells(i, exportedDataAge).Value
-      centersDB.Cells(m, centersLocAddress).Value = exportedData.Cells(i, exportedDataLocAddress).Value
-      centersDB.Cells(m, centersLocPhone).Value = exportedData.Cells(i, exportedDataLocalPhone).Value
-      centersDB.Cells(m, centersEmail).Value = exportedData.Cells(i, exportedDataEmail).Value
-      centersDB.Cells(m, centersGA).Value = exportedData.Cells(i, exportedDataGA).Value
-      centersDB.Cells(m, centersMajor1).Value = exportedData.Cells(i, exportedDataMajor1).Value
-      centersDB.Cells(m, centersMajor2).Value = exportedData.Cells(i, exportedDataMajor2).Value
-      centersDB.Cells(m, centersMinor1).Value = exportedData.Cells(i, exportedDataMinor1).Value
-      centersDB.Cells(m, centersMinor2).Value = exportedData.Cells(i, exportedDataMinor2).Value
-      centersDB.Cells(m, centersInstGPA).Value = exportedData.Cells(i, exportedDataInstGPA).Value
-      centersDB.Cells(m, centersOvGPA).Value = exportedData.Cells(i, exportedDataOvGPA).Value
-      centersDB.Cells(m, centersInstHrs).Value = exportedData.Cells(i, exportedDataInstHrs).Value
-      centersDB.Cells(m, centersOvHrs).Value = exportedData.Cells(i, exportedDataOvHrs).Value
-      centersDB.Cells(m, centersHonors).Value = exportedData.Cells(i, exportedDataHonors).Value
-      Exit For
-    ElseIf j = centersDB.UsedRange.Rows.Count And InStr(exportedData.Cells(i, exportedDataStatus).Value, "Duplicate") = 0 Then
-      centersDB.Rows(m).Insert Shift:=xlDown, _
-      CopyOrigin:=xlFormatFromLeftOrAbove
-      centersDB.Rows(m).Interior.ColorIndex = 0
-      centersDB.Cells(m, centers810).Value = exportedData.Cells(i, exportedData8x).Value
-      centersDB.Cells(m, centersLast).Value = exportedData.Cells(i, exportedDataLastname).Value
-      centersDB.Cells(m, centersFirst).Value = exportedData.Cells(i, exportedDataFirst).Value
-      centersDB.Cells(m, centersMiddle).Value = exportedData.Cells(i, exportedDataMiddle).Value
-      'nickname check
-      If exportedData.Cells(i, exportedDataNickname).Value <> "" Then
-        nameChk = exportedData.Cells(i, exportedDataNickname).Value
-        firstSpace = InStr(nameChk, " ")
-        If firstSpace > 0 Then
-          firstSpace = firstSpace - 1
-        Else
-          firstSpace = Len(nameChk)
-        End If
-        nameChk = Left(nameChk, firstSpace)
-        If exportedData.Cells(i, exportedDataFirst).Value <> nameChk Then
-          centersDB.Cells(m, centersNickname).Value = nameChk
-        End If
-      End If
+            centersDB.Cells(centersRowCounter, centersAppDate).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAppDate).Value
+            centersDB.Cells(centersRowCounter, centersStatus).Value = exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value
+            centersDB.Cells(centersRowCounter, centersAge).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAge).Value
+            centersDB.Cells(centersRowCounter, centersLocAddress).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLocAddress).Value
+            centersDB.Cells(centersRowCounter, centersLocPhone).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLocalPhone).Value
+            centersDB.Cells(centersRowCounter, centersEmail).Value = exportedData.Cells(exportedDataRowCounter, exportedDataEmail).Value
+            centersDB.Cells(centersRowCounter, centersGA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataGA).Value
+            centersDB.Cells(centersRowCounter, centersMajor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor1).Value
+            centersDB.Cells(centersRowCounter, centersMajor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor2).Value
+            centersDB.Cells(centersRowCounter, centersMinor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor1).Value
+            centersDB.Cells(centersRowCounter, centersMinor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor2).Value
+            centersDB.Cells(centersRowCounter, centersInstGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstGPA).Value
+            centersDB.Cells(centersRowCounter, centersOvGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvGPA).Value
+            centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
+            centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
+            centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+        
+            Exit For
+        ElseIf centersRowCounter = centersDB.UsedRange.Rows.Count And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
+            centersDB.Rows(centersRowCounter).Insert Shift:=xlDown, _
+            CopyOrigin:=xlFormatFromLeftOrAbove
+            centersDB.Rows(centersRowCounter).Interior.ColorIndex = 0
+            centersDB.Cells(centersRowCounter, centers8x).Value = exportedData.Cells(exportedDataRowCounter, exportedData8x).Value
+            centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
+            centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
+            centersDB.Cells(centersRowCounter, centersMiddleName).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMiddlename).Value
+            'nickname check
+            
+            If exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value <> "" Then
+                nameChk = exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value
+                firstSpace = InStr(nameChk, " ")
+                If firstSpace > 0 Then
+                    firstSpace = firstSpace - 1
+                Else
+                    firstSpace = Len(nameChk)
+                End If
+                
+                nameChk = Left(nameChk, firstSpace)
+                If exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value <> nameChk Then
+                    centersDB.Cells(centersRowCounter, centersNickname).Value = nameChk
+                End If
+            End If
   
-      centersDB.Cells(m, centersAppDate).Value = exportedData.Cells(i, exportedDataAppDate).Value
-      centersDB.Cells(m, centersStatus).Value = exportedData.Cells(i, exportedDataStatus).Value
-      centersDB.Cells(m, centersAge).Value = exportedData.Cells(i, exportedDataAge).Value
-      centersDB.Cells(m, centersLocAddress).Value = exportedData.Cells(i, exportedDataLocAddress).Value
-      centersDB.Cells(m, centersLocPhone).Value = exportedData.Cells(i, exportedDataLocalPhone).Value
-      centersDB.Cells(m, centersEmail).Value = exportedData.Cells(i, exportedDataEmail).Value
-      centersDB.Cells(m, centersGA).Value = exportedData.Cells(i, exportedDataGA).Value
-      centersDB.Cells(m, centersMajor1).Value = exportedData.Cells(i, exportedDataMajor1).Value
-      centersDB.Cells(m, centersMajor2).Value = exportedData.Cells(i, exportedDataMajor2).Value
-      centersDB.Cells(m, centersMinor1).Value = exportedData.Cells(i, exportedDataMinor1).Value
-      centersDB.Cells(m, centersMinor2).Value = exportedData.Cells(i, exportedDataMinor2).Value
-      centersDB.Cells(m, centersInstGPA).Value = exportedData.Cells(i, exportedDataInstGPA).Value
-      centersDB.Cells(m, centersOvGPA).Value = exportedData.Cells(i, exportedDataOvGPA).Value
-      centersDB.Cells(m, centersInstHrs).Value = exportedData.Cells(i, exportedDataInstHrs).Value
-      centersDB.Cells(m, centersOvHrs).Value = exportedData.Cells(i, exportedDataOvHrs).Value
-      centersDB.Cells(m, centersHonors).Value = exportedData.Cells(i, exportedDataHonors).Value
-      m = m + 1
-    End If
-  Next j
-  i = i + 1
+            centersDB.Cells(centersRowCounter, centersAppDate).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAppDate).Value
+            centersDB.Cells(centersRowCounter, centersStatus).Value = exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value
+            centersDB.Cells(centersRowCounter, centersAge).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAge).Value
+            centersDB.Cells(centersRowCounter, centersLocAddress).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLocAddress).Value
+            centersDB.Cells(centersRowCounter, centersLocPhone).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLocalPhone).Value
+            centersDB.Cells(centersRowCounter, centersEmail).Value = exportedData.Cells(exportedDataRowCounter, exportedDataEmail).Value
+            centersDB.Cells(centersRowCounter, centersGA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataGA).Value
+            centersDB.Cells(centersRowCounter, centersMajor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor1).Value
+            centersDB.Cells(centersRowCounter, centersMajor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor2).Value
+            centersDB.Cells(centersRowCounter, centersMinor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor1).Value
+            centersDB.Cells(centersRowCounter, centersMinor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor2).Value
+            centersDB.Cells(centersRowCounter, centersInstGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstGPA).Value
+            centersDB.Cells(centersRowCounter, centersOvGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvGPA).Value
+            centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
+            centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
+            centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+            centersRowCounter = centersRowCounter + 1
+        End If
+    Next centersRowCounter
+    exportedDataRowCounter = exportedDataRowCounter + 1
 Loop
 
 'finishing moves, flawless victory
-centersDB.Cells(5, 3).Value = Now
-If debugCode = False Then
-    exportedData.UsedRange.ClearContents
-    exportedData.Cells(1, 1).Value = "Copy and Paste centers onto this sheet"
-End If
+	centersDB.Cells(5, 3).Value = Now
+	If debugCode = False Then
+		exportedData.UsedRange.ClearContents
+		exportedData.Cells(1, 1).Value = "Copy and Paste centers onto this sheet"
+	End If
 
-Application.ScreenUpdating = True
+	Application.ScreenUpdating = True
 End Sub
