@@ -135,7 +135,6 @@ exportedDataRowCounter = 2
 Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> ""
     For centersRowCounter = 11 To centersDB.UsedRange.Rows.Count
         'scenario one - we have a non-dup match! let's update our data! copy data and end the for loop
-        MsgBox (exportedData.Cells(exportedDataRowCounter, exportedData8x).Value)
         If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(centersRowCounter, centers8x).Value And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
             MsgBox ("we have a match!")
             centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
@@ -236,6 +235,7 @@ MsgBox ("end")
 Application.ScreenUpdating = True
 End Sub
 
+'TODO - create function for nickname check
 Function nicknameCheck(nickname)
     If nickname <> "" Then
                 nameChk = exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value
