@@ -10,58 +10,19 @@ Dim centersDB, exportedData As Worksheet
 Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
-'setup columns for reference
-Dim exportedDataFirst As String
-Dim exportedDataLast As String
-Dim exportedData8x As String
-Dim exportedDataAge As String
-Dim exportedDataInstGPA As String
-Dim exportedDataOvGPA As String
-Dim exportedDataInstHrs As String
-Dim exportedDataOvHrs As String
-Dim exportedDataStatus As String
-Dim exportedDataAppDate As String
-Dim exportedDataProgram As String
-Dim exportedDataGA As String
-Dim exportedDataHonors As String
-Dim exportedDataMajor1 As String
-Dim exportedDataMajor2 As String
-Dim exportedDataMajor3 As String
-Dim exportedDataMinor1 As String
-Dim exportedDataMinor2 As String
-Dim exportedDataEmail As String
-Dim exportedDataDegree As String
-Dim exportedDataLocPhone As String
-Dim exportedDataLocAddress As String
-Dim exportedDataCriminal As String
-                  
-Dim centersFirst As Integer
-Dim centersLast As Integer
-Dim centers8x As Integer
-Dim centersAge As Integer
-Dim centersInstGPA As Integer
-Dim centersOvGPA As Integer
-Dim centersInstHrs As Integer
-Dim centersOvHrs As Integer
-Dim centersStatus As Integer
-Dim centersAppDate As Integer
-Dim centersProgram As Integer
-Dim centersGA As Integer
-Dim centersHonors As Integer
-Dim centersMajor1 As Integer
-Dim centersMajor2 As Integer
-Dim centersMajor3 As Integer
-Dim centersMinor1 As Integer
-Dim centersMinor2 As Integer
-Dim centersEmail As Integer
-Dim centersDegree As Integer
-Dim centersLocPhone As Integer
-Dim centersLocAddress As Integer
-Dim centersCriminal As Integer
+'setup terra dotta export data columns for reference
+Dim exportedDataFirst, exportedDataLastname, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA, exportedDataInstHrs
+Dim exportedDataOvHrs, exportedDataStatus, exportedDataAppDate, exportedDataProgram, exportedDataGA, exportedDataHonors
+Dim exportedDataMajor1, exportedDataMajor2, exportedDataMajor3, exportedDataMinor1, exportedDataMinor2, exportedDataEmail
+Dim exportedDataDegree, exportedDataLocalPhone, exportedDataLocAddress, exportedDataCriminal
+'setup the centers database columns
+Dim centersFirst, centersLast, centers8x, centersAge, centersInstGPA, centersOvGPA, centersInstHrs, centersOvHrs
+Dim centersStatus, centersAppDate, centersProgram, centersGA, centersHonors, centersMajor1, centersMajor2, centersMajor3
+Dim centersMinor1, centersMinor2, centersEmail, centersDegree, centersLocPhone, centersLocAddress, centersCriminal
 
 'assign column number to each corresponding title
 exportedDataFirst = "B"
-exportedDataLast = "C"
+exportedDataLastname = "C"
 exportedDataMiddle = "D"
 exportedData8x = "CX"
 exportedDataAge = "F"
@@ -82,7 +43,7 @@ exportedDataMinor2 = "Y"
 exportedDataEmail = "Z"
 exportedDataNickname = "AB"
 exportedDataDegree = "AH"
-exportedDataLocPhone = "AR"
+exportedDataLocalPhone = "S"
 exportedDataLocAddress = "AS"
 
 centersLast = 1
@@ -116,7 +77,7 @@ Dim l As String
 Dim n As String
 Dim p As Integer
 k = 2
-Do While exportedData.Cells(k, exportedDataLast).Value <> ""
+Do While exportedData.Cells(k, exportedDataLastname).Value <> ""
   If exportedData.Cells(k, exportedDataAppDate).Value <> 0 Then
     exportedData.Cells(k, exportedDataAppDate).Value = Left(exportedData.Cells(k, exportedDataAppDate).Value, Len(exportedData.Cells(k, exportedDataAppDate).Value) - 4)
   End If
@@ -124,20 +85,18 @@ Do While exportedData.Cells(k, exportedDataLast).Value <> ""
 Loop
 
 'duplicate person record check
-Dim z As Integer
-z = 2
-Dim y As Integer
-y = 2
-Dim x As Integer
+Dim z, y, x
 x = 0
+z = 2
+y = 2
 
-Do While exportedData.Cells(z, exportedDataLast).Value <> ""
+Do While exportedData.Cells(z, exportedDataLastname).Value <> ""
   For y = 2 To 300
     If exportedData.Cells(y, exportedData8x).Value = exportedData.Cells(z, exportedData8x).Value And InStr(exportedData.Cells(y, exportedDataStatus).Value, "Duplicate") = 0 Then
       x = x + 1
     End If
     If x > 1 Then
-      MsgBox (exportedData.Cells(z, exportedDataLast).Value & vbNewLine & "Serious Error - duplicate records exist")
+      MsgBox (exportedData.Cells(z, exportedDataLastname).Value & vbNewLine & "Serious Error - duplicate records exist")
         If debugCode = False Then
             exportedData.UsedRange.ClearContents
             exportedData.Cells(1, 1).Value = "Copy and Paste output onto this sheet"
@@ -149,46 +108,43 @@ Do While exportedData.Cells(z, exportedDataLast).Value <> ""
   z = z + 1
 Loop
 
-'phone checks
-Dim phoneRow_1, phoneRow_2 As Integer
-Dim phoneChk, newPhone As String
+'make sure phone contains numeric values only, by checking each character one by one
+'strip out alpha characters
+Dim recordCounter, characterCounter, originalPhoneNumber, digitsOnlyPhoneNumber
 
-phoneRow_1 = 2
+recordCounter = 2
 
-Do While exportedData.Cells(phoneRow_1, exportedDataLast).Value <> ""
-    If exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value <> "" Then
-        phoneChk = exportedData.Cells(phoneRow_1, exportedDataLocPhone).Value
-
-        For phoneRow_2 = 1 To Len(phoneChk)
-            If IsNumeric(Mid(phoneChk, phoneRow_2, 1)) Then
-                newPhone = newPhone & Mid(phoneChk, phoneRow_2, 1)
-            End If
-        Next phoneRow_2
-        
-        exportedData.Cells(q, exportedDataLocPhone).Value = newPhone
-        newPhone = ""
-    End If
+Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
+    originalPhoneNumber = exportedData.Cells(recordCounter, exportedDataLocalPhone).Value
     
-    phoneRow_1 = phoneRow_1 + 1
+    For characterCounter = 1 To Len(originalPhoneNumber)
+        If IsNumeric(Mid(originalPhoneNumber, characterCounter, 1)) Then
+            digitsOnlyPhoneNumber = digitsOnlyPhoneNumber & Mid(originalPhoneNumber, characterCounter, 1)
+        End If
+    Next characterCounter
+
+    exportedData.Cells(recordCounter, exportedDataLocalPhone).Value = digitsOnlyPhoneNumber
+    digitsOnlyPhoneNumber = ""
+    
+    recordCounter = recordCounter + 1
 Loop
 
-'Begin data transfer
+'begin data transfer
 Dim s As Integer
-s = 2
 Dim t As String
-
 Dim i As Integer
 Dim j As Integer
 Dim m As Integer
 Dim nameChk As String
 Dim firstSpace As Integer
+s = 2
 i = 2
 m = 8
 
-Do While exportedData.Cells(i, exportedDataLast).Value <> ""
+Do While exportedData.Cells(i, exportedDataLastname).Value <> ""
   For j = 11 To centersDB.UsedRange.Rows.Count
     If exportedData.Cells(i, exportedData8x).Value = centersDB.Cells(j, centers8x).Value And InStr(exportedData.Cells(i, exportedDataStatus).Value, "Duplicate") = 0 Then
-      centersDB.Cells(j, centersLast).Value = exportedData.Cells(i, exportedDataLast).Value
+      centersDB.Cells(j, centersLast).Value = exportedData.Cells(i, exportedDataLastname).Value
       centersDB.Cells(j, centersFirst).Value = exportedData.Cells(i, exportedDataFirst).Value
       centersDB.Cells(j, centersMiddle).Value = exportedData.Cells(i, exportedDataMiddle).Value
       'does the nickname exist??
@@ -210,7 +166,7 @@ Do While exportedData.Cells(i, exportedDataLast).Value <> ""
       centersDB.Cells(m, centersStatus).Value = exportedData.Cells(i, exportedDataStatus).Value
       centersDB.Cells(m, centersAge).Value = exportedData.Cells(i, exportedDataAge).Value
       centersDB.Cells(m, centersLocAddress).Value = exportedData.Cells(i, exportedDataLocAddress).Value
-      centersDB.Cells(m, centersLocPhone).Value = exportedData.Cells(i, exportedDataLocPhone).Value
+      centersDB.Cells(m, centersLocPhone).Value = exportedData.Cells(i, exportedDataLocalPhone).Value
       centersDB.Cells(m, centersEmail).Value = exportedData.Cells(i, exportedDataEmail).Value
       centersDB.Cells(m, centersGA).Value = exportedData.Cells(i, exportedDataGA).Value
       centersDB.Cells(m, centersMajor1).Value = exportedData.Cells(i, exportedDataMajor1).Value
@@ -228,7 +184,7 @@ Do While exportedData.Cells(i, exportedDataLast).Value <> ""
       CopyOrigin:=xlFormatFromLeftOrAbove
       centersDB.Rows(m).Interior.ColorIndex = 0
       centersDB.Cells(m, centers810).Value = exportedData.Cells(i, exportedData8x).Value
-      centersDB.Cells(m, centersLast).Value = exportedData.Cells(i, exportedDataLast).Value
+      centersDB.Cells(m, centersLast).Value = exportedData.Cells(i, exportedDataLastname).Value
       centersDB.Cells(m, centersFirst).Value = exportedData.Cells(i, exportedDataFirst).Value
       centersDB.Cells(m, centersMiddle).Value = exportedData.Cells(i, exportedDataMiddle).Value
       'nickname check
@@ -250,7 +206,7 @@ Do While exportedData.Cells(i, exportedDataLast).Value <> ""
       centersDB.Cells(m, centersStatus).Value = exportedData.Cells(i, exportedDataStatus).Value
       centersDB.Cells(m, centersAge).Value = exportedData.Cells(i, exportedDataAge).Value
       centersDB.Cells(m, centersLocAddress).Value = exportedData.Cells(i, exportedDataLocAddress).Value
-      centersDB.Cells(m, centersLocPhone).Value = exportedData.Cells(i, exportedDataLocPhone).Value
+      centersDB.Cells(m, centersLocPhone).Value = exportedData.Cells(i, exportedDataLocalPhone).Value
       centersDB.Cells(m, centersEmail).Value = exportedData.Cells(i, exportedDataEmail).Value
       centersDB.Cells(m, centersGA).Value = exportedData.Cells(i, exportedDataGA).Value
       centersDB.Cells(m, centersMajor1).Value = exportedData.Cells(i, exportedDataMajor1).Value
@@ -277,4 +233,3 @@ End If
 
 Application.ScreenUpdating = True
 End Sub
-
