@@ -1,8 +1,11 @@
 Sub internationalCenters()
 
+'for optimization, don't refresh screen while running the macro
 Application.ScreenUpdating = False
+
+'define common variables
+Dim recordCounter, innerLoopCounter, debugCode
 'use the debug code to prevent data loss while testing, not to be used in production
-Dim debugCode As Boolean
 debugCode = True
 
 'setup worksheets for reference
@@ -11,20 +14,20 @@ Set centersDB = Worksheets(2)
 Set exportedData = Worksheets(1)
 
 'setup terra dotta export data columns for reference
-Dim exportedDataFirstname, exportedDataLastname, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA, exportedDataInstHrs
+Dim exportedDataFirstname, exportedDataLastname, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA
 Dim exportedDataOvHrs, exportedDataStatus, exportedDataAppDate, exportedDataProgram, exportedDataGA, exportedDataHonors
 Dim exportedDataMajor1, exportedDataMajor2, exportedDataMajor3, exportedDataMinor1, exportedDataMinor2, exportedDataEmail
-Dim exportedDataDegree, exportedDataLocalPhone, exportedDataLocAddress, exportedDataCriminal
+Dim exportedDataDegree, exportedDataLocalPhone, exportedDataLocAddress, exportedDataCriminal, exportedDataInstHrs
 'setup the centers database columns
 Dim centersFirstname, centersLastname, centers8x, centersAge, centersInstGPA, centersOvGPA, centersInstHrs, centersOvHrs
 Dim centersStatus, centersAppDate, centersProgram, centersGA, centersHonors, centersMajor1, centersMajor2, centersMajor3
 Dim centersMinor1, centersMinor2, centersEmail, centersDegree, centersLocPhone, centersLocAddress, centersCriminal
 
-'assign column number to each corresponding title
+'assign column letter to each exported data field title
 exportedDataFirstname = "B"
 exportedDataLastname = "C"
 exportedDataMiddlename = "D"
-exportedData8x = "CX"
+exportedData8x = "A"
 exportedDataAge = "F"
 exportedDataInstGPA = "G"
 exportedDataOvGPA = "H"
@@ -45,8 +48,8 @@ exportedDataNickname = "AB"
 exportedDataDegree = "AH"
 exportedDataLocalPhone = "S"
 exportedDataLocAddress = "AS"
-
-centersLastname = 1
+'assign numerical position for the centers data
+centersLastname = 22
 centersFirstname = 2
 centersMiddleName = 3
 centersStatus = 4
@@ -71,49 +74,44 @@ centersNickname = 24
 centersLocAddress = 26
 centersLocPhone = 35
 
-'modify dates to show month,day,year only
-Dim k As Integer
-Dim l As String
-Dim n As String
-Dim p As Integer
-k = 2
-Do While exportedData.Cells(k, exportedDataLastname).Value <> ""
-  If exportedData.Cells(k, exportedDataAppDate).Value <> 0 Then
-    exportedData.Cells(k, exportedDataAppDate).Value = Left(exportedData.Cells(k, exportedDataAppDate).Value, Len(exportedData.Cells(k, exportedDataAppDate).Value) - 4)
+'modify all application dates to show month,day,year only
+recordCounter = 2
+Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
+  If exportedData.Cells(recordCounter, exportedDataAppDate).Value <> 0 Then
+    exportedData.Cells(recordCounter, exportedDataAppDate).Value = Left(exportedData.Cells(recordCounter, exportedDataAppDate).Value, Len(exportedData.Cells(recordCounter, exportedDataAppDate).Value) - 4)
   End If
-  k = k + 1
+  
+  recordCounter = recordCounter + 1
 Loop
 
 'duplicate person record check
-Dim z, y, x
-x = 0
-z = 2
-y = 2
 
-Do While exportedData.Cells(z, exportedDataLastname).Value <> ""
-  For y = 2 To 300
-    If exportedData.Cells(y, exportedData8x).Value = exportedData.Cells(z, exportedData8x).Value And InStr(exportedData.Cells(y, exportedDataStatus).Value, "Duplicate") = 0 Then
-      x = x + 1
-    End If
-    If x > 1 Then
-      MsgBox (exportedData.Cells(z, exportedDataLastname).Value & vbNewLine & "Serious Error - duplicate records exist")
-        If debugCode = False Then
-            exportedData.UsedRange.ClearContents
-            exportedData.Cells(1, 1).Value = "Copy and Paste output onto this sheet"
+recordCounter = 2
+Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
+    For innerLoopCounter = 2 To 300
+        If exportedData.Cells(innerLoopCounter, exportedData8x).Value = exportedData.Cells(recordCounter, exportedData8x).Value And InStr(exportedData.Cells(innerLoopCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
+            x = x + 1
         End If
-      Exit Sub 'serious error, macro stops all further actions
-    End If
-  Next y
-  x = 0
-  z = z + 1
+        
+        If x > 1 Then
+            MsgBox (exportedData.Cells(recordCounter, exportedDataLastname).Value & vbNewLine & "Serious Error - duplicate records exist")
+            If debugCode = False Then
+                exportedData.UsedRange.ClearContents
+                exportedData.Cells(1, 1).Value = "Copy and Paste output onto this sheet"
+                End If
+            Exit Sub 'serious error, macro stops all further actions
+        End If
+    Next innerLoopCounter
+    
+    x = 0
+    recordCounter = recordCounter + 1
 Loop
 
 'make sure phone contains numeric values only, by checking each character one by one
 'strip out alpha characters
-Dim recordCounter, characterCounter, originalPhoneNumber, digitsOnlyPhoneNumber
+Dim characterCounter, originalPhoneNumber, digitsOnlyPhoneNumber
 
 recordCounter = 2
-
 Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
     originalPhoneNumber = exportedData.Cells(recordCounter, exportedDataLocalPhone).Value
     
@@ -129,22 +127,28 @@ Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
 Loop
 
 'begin data transfer
-Dim exportedDataRowCounter, centersRowCounter, firstSpace, nameChk
+Dim exportedDataRowCounter, centersRowCounter
+Dim nameChk As String
+Dim firstSpace As Integer
 
 exportedDataRowCounter = 2
 Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> ""
     For centersRowCounter = 11 To centersDB.UsedRange.Rows.Count
+        'scenario one - we have a non-dup match! let's update our data! copy data and end the for loop
+        MsgBox (exportedData.Cells(exportedDataRowCounter, exportedData8x).Value)
         If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(centersRowCounter, centers8x).Value And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
+            MsgBox ("we have a match!")
             centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
             centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
             centersDB.Cells(centersRowCounter, centersMiddleName).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMiddlename).Value
+            
             'does the nickname exist??
             If exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value <> "" Then
                 nameChk = exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value
-                firstSpace = InStr(nameChk, " ")
-                If firstSpace > 0 Then
-                    firstSpace = firstSpace - 1
-                    Else
+                'find the position of the first space in the nickname
+                If InStr(nameChk, " ") > 0 Then
+                    firstSpace = InStr(nameChk, " ") - 1
+                Else
                     firstSpace = Len(nameChk)
                 End If
                 nameChk = Left(nameChk, firstSpace)
@@ -169,8 +173,9 @@ Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value 
             centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
             centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
             centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+        Exit For
         
-            Exit For
+        'scenario two, we've hit the end of known centers applications. no other match found, migrate the rest of the unique record data exportedData
         ElseIf centersRowCounter = centersDB.UsedRange.Rows.Count And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
             centersDB.Rows(centersRowCounter).Insert Shift:=xlDown, _
             CopyOrigin:=xlFormatFromLeftOrAbove
@@ -179,8 +184,8 @@ Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value 
             centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
             centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
             centersDB.Cells(centersRowCounter, centersMiddleName).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMiddlename).Value
-            'nickname check
             
+            'nickname check
             If exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value <> "" Then
                 nameChk = exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value
                 firstSpace = InStr(nameChk, " ")
@@ -215,15 +220,36 @@ Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value 
             centersRowCounter = centersRowCounter + 1
         End If
     Next centersRowCounter
+    
     exportedDataRowCounter = exportedDataRowCounter + 1
 Loop
 
 'finishing moves, flawless victory
-	centersDB.Cells(5, 3).Value = Now
-	If debugCode = False Then
-		exportedData.UsedRange.ClearContents
-		exportedData.Cells(1, 1).Value = "Copy and Paste centers onto this sheet"
-	End If
+centersDB.Cells(5, 3).Value = Now
+If debugCode = False Then
+    exportedData.UsedRange.ClearContents
+    exportedData.Cells(1, 1).Value = "Copy and Paste centers onto this sheet"
+End If
 
-	Application.ScreenUpdating = True
+MsgBox ("end")
+'it's a good idea to disable the optimization and set screen updating to true
+Application.ScreenUpdating = True
 End Sub
+
+Function nicknameCheck(nickname)
+    If nickname <> "" Then
+                nameChk = exportedData.Cells(exportedDataRowCounter, exportedDataNickname).Value
+                firstSpace = InStr(nameChk, " ")
+                If firstSpace > 0 Then
+                    firstSpace = firstSpace - 1
+                Else
+                    firstSpace = Len(nameChk)
+                End If
+                
+                nameChk = Left(nameChk, firstSpace)
+                If exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value <> nameChk Then
+                    centersDB.Cells(centersRowCounter, centersNickname).Value = nameChk
+                End If
+            End If
+
+End Function
