@@ -101,7 +101,8 @@ Loop
 
 
 'begin data transfer
-Dim exportedDataRowCounter, centersRowCounter
+Dim exportedDataRowCounter
+Dim centersRowCounter As Integer
 Dim nameChk As String
 Dim centersRowEnd As Integer
 Dim FoundCell As Range
@@ -117,14 +118,14 @@ Dim FoundCell As Range
             End If
 
 
-
+centersRowCounter = 11
 exportedDataRowCounter = 2
 Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> ""
-    For centersRowCounter = 11 To 50
+    For centersRowCounter = centersRowCounter To centersRowEnd
         'scenario one - we have a non-dup match! let's update our data! copy data and end the for loop
         If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(centersRowCounter, centers8x).Value And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
             
-           ' MsgBox ("we have a match in the Centers Row Counter! " & centersRowCounter & "Used Range Row Count: " & centersDB.UsedRange.Rows.Count)
+            MsgBox ("we have a match in the Centers Row Counter! " & centersRowCounter)
             
             centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
             centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
@@ -144,8 +145,39 @@ Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value 
             centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
             centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
             centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+            exportedDataRowCounter = exportedDataRowCounter + 1
+            centersRowCounter = centersRowCounter + 1
             Exit For
-        
+            
+            
+        'scenario three, we've hit the end of table, add new row and add applicant
+        ElseIf centersRowCounter = centersRowEnd And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
+            MsgBox ("Reached end with new applicant found with name: " & exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value & " to be inputted on centersDB row: " & centersRowCounter)
+            
+            centersDB.Rows(centersRowCounter).EntireRow.Insert Shift:=xlDown ', '_
+            'CopyOrigin:=xlFormatFromLeftOrAbove
+            'centersDB.Rows(centersRowCounter).Interior.ColorIndex = 0
+            centersDB.Cells(centersRowCounter, centers8x).Value = exportedData.Cells(exportedDataRowCounter, exportedData8x).Value
+            centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
+            centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
+            centersDB.Cells(centersRowCounter, centersMiddleName).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMiddlename).Value
+            centersDB.Cells(centersRowCounter, centersAppDate).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAppDate).Value
+            centersDB.Cells(centersRowCounter, centersStatus).Value = exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value
+            centersDB.Cells(centersRowCounter, centersAge).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAge).Value
+            centersDB.Cells(centersRowCounter, centersEmail).Value = exportedData.Cells(exportedDataRowCounter, exportedDataEmail).Value
+            centersDB.Cells(centersRowCounter, centersGA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataGA).Value
+            centersDB.Cells(centersRowCounter, centersMajor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor1).Value
+            centersDB.Cells(centersRowCounter, centersMajor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor2).Value
+            centersDB.Cells(centersRowCounter, centersMinor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor1).Value
+            centersDB.Cells(centersRowCounter, centersMinor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor2).Value
+            centersDB.Cells(centersRowCounter, centersInstGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstGPA).Value
+            centersDB.Cells(centersRowCounter, centersOvGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvGPA).Value
+            centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
+            centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
+            centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+            centersRowEnd = centersRowEnd + 1
+            
+            
         'scenario two, add new applicant to table
          ElseIf centersDB.Cells(centersRowCounter, centers8x).Value = "" And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
             MsgBox ("New applicant found with name: " & exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value & " to be inputted on centersDB row: " & centersRowCounter)
@@ -170,35 +202,12 @@ Do While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value 
             centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
             
         
-        'scenario three, we've hit the ebd of table, add new row and add applicant
+        
         'TODO: centersRowCounter = centersDB.UsedRange.Rows.Count is causing data to be entered in lines ~230. Must change UsedRange to something more granular.
         'This code block re-updates data for applicants
         
         
-        ElseIf centersRowCounter = centersRowEnd And InStr(exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value, "Duplicate") = 0 Then
-            MsgBox ("Reached end with new applicant found with name: " & exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value & " to be inputted on centersDB row: " & centersRowCounter)
-            
-            centersDB.Rows(centersRowCounter).EntireRow.Insert Shift:=xlDown ', '_
-            'CopyOrigin:=xlFormatFromLeftOrAbove
-            centersDB.Rows(centersRowCounter).Interior.ColorIndex = 0
-            centersDB.Cells(centersRowCounter, centers8x).Value = exportedData.Cells(exportedDataRowCounter, exportedData8x).Value
-            centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
-            centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
-            centersDB.Cells(centersRowCounter, centersMiddleName).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMiddlename).Value
-            centersDB.Cells(centersRowCounter, centersAppDate).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAppDate).Value
-            centersDB.Cells(centersRowCounter, centersStatus).Value = exportedData.Cells(exportedDataRowCounter, exportedDataStatus).Value
-            centersDB.Cells(centersRowCounter, centersAge).Value = exportedData.Cells(exportedDataRowCounter, exportedDataAge).Value
-            centersDB.Cells(centersRowCounter, centersEmail).Value = exportedData.Cells(exportedDataRowCounter, exportedDataEmail).Value
-            centersDB.Cells(centersRowCounter, centersGA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataGA).Value
-            centersDB.Cells(centersRowCounter, centersMajor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor1).Value
-            centersDB.Cells(centersRowCounter, centersMajor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMajor2).Value
-            centersDB.Cells(centersRowCounter, centersMinor1).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor1).Value
-            centersDB.Cells(centersRowCounter, centersMinor2).Value = exportedData.Cells(exportedDataRowCounter, exportedDataMinor2).Value
-            centersDB.Cells(centersRowCounter, centersInstGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstGPA).Value
-            centersDB.Cells(centersRowCounter, centersOvGPA).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvGPA).Value
-            centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
-            centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
-            centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+        
             
             'centersRowEnd = centersRowEnd + 1
         
