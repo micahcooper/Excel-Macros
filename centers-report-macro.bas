@@ -109,17 +109,16 @@ centersRowEnd = findEndOfCentersTable(centersDB)
 If centersRowEnd < centersStartCounter Then
 centersRowEnd = centersStartCounter
 End If
-MsgBox (centersRowEnd)
+'MsgBox (centersRowEnd)
 
 While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> vbNullString
     For recordCounter = centersStartCounter To centersRowEnd
-        MsgBox (exportedData.Cells(exportedDataRowCounter, exportedData8x).Value & " " & centersDB.Cells(recordCounter, centers8x))
+        'MsgBox (exportedData.Cells(exportedDataRowCounter, exportedData8x).Value & " " & centersDB.Cells(recordCounter, centers8x))
         'scenario one - we have a non-dup match! let's update our data! copy data and end the for loop
         If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(recordCounter, centers8x).Value Then
             Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
             exportedDataRowCounter = exportedDataRowCounter + 1
-            recordCounter = recordCounter + 1
-            Exit For
+    Exit For
             
         'scenario two, we've hit the end of section, add new row and add applicant to that row
         ElseIf centersRowCounter = centersRowEnd Then
