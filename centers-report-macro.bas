@@ -1,3 +1,4 @@
+Attribute VB_Name = "Module3"
 'setup terra dotta export data columns for reference
 Dim exportedDataFirstname, exportedDataLastname, exportedDataMiddlename, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA
 Dim exportedDataInstHrs, exportedDataOvHrs, exportedDataStatus, exportedDataAppDate, exportedDataGA, exportedDataHonors
@@ -6,7 +7,9 @@ Dim exportedDataMajor1, exportedDataMajor2, exportedDataMajor3, exportedDataMino
 Dim centersFirstname, centersLastname, centersMiddleName, centers8x, centersAge, centersInstGPA, centersOvGPA, centersInstHrs, centersOvHrs
 Dim centersStatus, centersAppDate, centersProgram, centersGA, centersHonors, centersMajor1, centersMajor2, centersMajor3
 Dim centersMinor1, centersMinor2, centersEmail
-'Attribute VB_Name = "Module3"
+
+Dim exportedDataRowCounter As Integer
+
 Sub FISFall2020()
 'for optimization, don't refresh screen while running the macro
 Application.ScreenUpdating = False
@@ -14,9 +17,6 @@ Application.ScreenUpdating = False
 'setup worksheets for reference
 Dim centersDB As Worksheet, exportedData As Worksheet
 
-
-
-Dim exportedDataRowCounter As Integer
 Dim centersRowCounter As Integer
 
 Set centersDB = Worksheets(1)
@@ -47,7 +47,7 @@ exportedDataInstGPA = "O"
 exportedDataOvGPA = "P"
 exportedDataInstHrs = "Q"
 exportedDataOvHrs = "R"
-exportedData8x = "CW"
+exportedData8x = "S"
 
 'assign numerical position for the centers data
 centersLastname = 2
@@ -103,6 +103,7 @@ Loop
 Dim centersRowEnd As Integer, centersStartCounter As Integer
 
 centersStartCounter = 11
+recordCounter = centersStartCounter
 exportedDataRowCounter = 2
 centersRowEnd = findEndOfCentersTable(centersDB)
 
@@ -111,27 +112,25 @@ centersRowEnd = centersStartCounter
 End If
 'MsgBox (centersRowEnd)
 
-While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> vbNullString
+While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> ""
     For recordCounter = centersStartCounter To centersRowEnd
         'MsgBox (exportedData.Cells(exportedDataRowCounter, exportedData8x).Value & " " & centersDB.Cells(recordCounter, centers8x))
         'scenario one - we have a non-dup match! let's update our data! copy data and end the for loop
         If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(recordCounter, centers8x).Value Then
-            Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
-            exportedDataRowCounter = exportedDataRowCounter + 1
-    Exit For
+            Call TransferData(centersDB, exportedData, recordCounter)
+            Exit For
             
         'scenario two, we've hit the end of section, add new row and add applicant to that row
-        ElseIf centersRowCounter = centersRowEnd Then
+        ElseIf recordCounter = centersRowEnd Then
             centersDB.Rows(recordCounter).EntireRow.Insert Shift:=xlDown
-            Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
+            Call TransferData(centersDB, exportedData, recordCounter)
             centersRowEnd = centersRowEnd + 1
             
         'scenario three, add new applicant to current row in section
         ElseIf centersDB.Cells(recordCounter, centers8x).Value = "" Then
-            Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
+            Call TransferData(centersDB, exportedData, recordCounter)
         End If
         
-        exportedDataRowCounter = exportedDataRowCounter + 1
     Next recordCounter
 Wend
 
@@ -148,7 +147,7 @@ Application.ScreenUpdating = True
 End Sub
 
 'This subroutine copies applicant records line-by-line from the "Report" tab and pastes into the "3-Center Applications" tab. Data is pasted from row 11 onwards
-Sub TransferData(ByVal centersDB As Worksheet, ByVal exportedData As Worksheet, ByVal centersRowCounter As Integer, ByVal exportedDataRowCounter As Integer)
+Sub TransferData(ByVal centersDB As Worksheet, ByVal exportedData As Worksheet, ByVal centersRowCounter As Integer)
             centersDB.Cells(centersRowCounter, centers8x).Value = exportedData.Cells(exportedDataRowCounter, exportedData8x).Value
             centersDB.Cells(centersRowCounter, centersLastname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value
             centersDB.Cells(centersRowCounter, centersFirstname).Value = exportedData.Cells(exportedDataRowCounter, exportedDataFirstname).Value
@@ -167,6 +166,8 @@ Sub TransferData(ByVal centersDB As Worksheet, ByVal exportedData As Worksheet, 
             centersDB.Cells(centersRowCounter, centersInstHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataInstHrs).Value
             centersDB.Cells(centersRowCounter, centersOvHrs).Value = exportedData.Cells(exportedDataRowCounter, exportedDataOvHrs).Value
             centersDB.Cells(centersRowCounter, centersHonors).Value = exportedData.Cells(exportedDataRowCounter, exportedDataHonors).Value
+            
+            exportedDataRowCounter = exportedDataRowCounter + 1
 End Sub
 
 'This function returns the row just before the "Under Review" row. I am making the assumption that we are only checking
@@ -181,3 +182,6 @@ Dim FoundCell As Range
                 findEndOfCentersTable = FoundCell.Row
             End If
 End Function
+
+
+
