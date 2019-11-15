@@ -1,5 +1,3 @@
-Attribute VB_Name = "Module3"
-
 'setup terra dotta export data columns for reference
 Dim exportedDataFirstname, exportedDataLastname, exportedDataMiddlename, exportedData8x, exportedDataAge, exportedDataInstGPA, exportedDataOvGPA
 Dim exportedDataInstHrs, exportedDataOvHrs, exportedDataStatus, exportedDataAppDate, exportedDataGA, exportedDataHonors
@@ -49,13 +47,13 @@ exportedDataInstGPA = "O"
 exportedDataOvGPA = "P"
 exportedDataInstHrs = "Q"
 exportedDataOvHrs = "R"
-exportedData8x = "S"
+exportedData8x = "CW"
 
 'assign numerical position for the centers data
 centersLastname = 2
 centersFirstname = 3
 centersMiddleName = 4
-centers8x = 5
+centers8x = 1
 centersAge = 6
 centersInstGPA = 7
 centersOvGPA = 8
@@ -102,34 +100,39 @@ Do While exportedData.Cells(recordCounter, exportedDataLastname).Value <> ""
 Loop
 
 'begin data transfer
-Dim centersRowEnd As Integer
-centersRowCounter = 11
+Dim centersRowEnd As Integer, centersStartCounter As Integer
+
+centersStartCounter = 11
 exportedDataRowCounter = 2
 centersRowEnd = findEndOfCentersTable(centersDB)
 
+If centersRowEnd < centersStartCounter Then
+centersRowEnd = centersStartCounter
+End If
+'MsgBox (centersRowEnd)
+
 While exportedData.Cells(exportedDataRowCounter, exportedDataLastname).Value <> vbNullString
-    For centersRowCounter = centersRowCounter To centersRowEnd
-    
+    For recordCounter = centersStartCounter To centersRowEnd
+        'MsgBox (exportedData.Cells(exportedDataRowCounter, exportedData8x).Value & " " & centersDB.Cells(recordCounter, centers8x))
         'scenario one - we have a non-dup match! let's update our data! copy data and end the for loop
-        If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(centersRowCounter, centers8x).Value = 0 Then
-            Call TransferData(centersDB, exportedData, centersRowCounter, exportedDataRowCounter)
+        If exportedData.Cells(exportedDataRowCounter, exportedData8x).Value = centersDB.Cells(recordCounter, centers8x).Value Then
+            Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
             exportedDataRowCounter = exportedDataRowCounter + 1
-            centersRowCounter = centersRowCounter + 1
-            Exit For
+    Exit For
             
         'scenario two, we've hit the end of section, add new row and add applicant to that row
         ElseIf centersRowCounter = centersRowEnd Then
-            centersDB.Rows(centersRowCounter).EntireRow.Insert Shift:=xlDown
-            Call TransferData(centersDB, exportedData, centersRowCounter, exportedDataRowCounter)
+            centersDB.Rows(recordCounter).EntireRow.Insert Shift:=xlDown
+            Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
             centersRowEnd = centersRowEnd + 1
             
         'scenario three, add new applicant to current row in section
-         ElseIf centersDB.Cells(centersRowCounter, centers8x).Value = "" Then
-            Call TransferData(centersDB, exportedData, centersRowCounter, exportedDataRowCounter)
+        ElseIf centersDB.Cells(recordCounter, centers8x).Value = "" Then
+            Call TransferData(centersDB, exportedData, recordCounter, exportedDataRowCounter)
         End If
         
-    exportedDataRowCounter = exportedDataRowCounter + 1
-    Next centersRowCounter
+        exportedDataRowCounter = exportedDataRowCounter + 1
+    Next recordCounter
 Wend
 
 'finishing moves, flawless victory
@@ -175,7 +178,6 @@ Dim FoundCell As Range
 
             Set FoundCell = centersDB.Range("L:L").Find(what:=WHAT_TO_FIND, MatchCase:=True)
             If Not FoundCell Is Nothing Then
-                findEndOfCentersTable = FoundCell.Row - 1
+                findEndOfCentersTable = FoundCell.Row
             End If
 End Function
-
